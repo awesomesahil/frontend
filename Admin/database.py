@@ -3,6 +3,8 @@ import json
 from passlib.hash import sha256_crypt
 import os
 import gc
+import csv
+from pyexcel_xlsx import get_data
 
 base='http://www.shopkare.com/'
 
@@ -12,9 +14,14 @@ def MongoDBconnection(database, collection):
   cursor = db[collection]
   return connection, db, cursor
 
-def registerAdmin(user):
+def registerAdmin(user, AdminType):
   try:
-    connection, db, collection = MongoDBconnection('Admin', 'Admin')
+    if AdminType == 'Super Admin':
+      connection, db, collection = MongoDBconnection('Admin', 'SuperAdmin')
+    elif AdminType == 'Normal Admin':
+      connection, db, collection = MongoDBconnection('Admin', 'Admin')
+    else:
+      return 'Authorization Not Found'
     user = json.loads(user)
     if collection.find({'$or':[{"Mobile":user['Mobile']},{"Email":user['Email']}]}).count():
       return 'User Already Exists'
@@ -32,9 +39,14 @@ def registerAdmin(user):
     print str(e)
     return 'Unable to Register'
 
-def loginAdmin(user):
+def loginAdmin(user, AdminType):
   try:
-    connection, db, collection = MongoDBconnection('Admin', 'Admin')
+    if AdminType == 'Super Admin':
+      connection, db, collection = MongoDBconnection('Admin', 'SuperAdmin')
+    elif AdminType == 'Normal Admin':
+      connection, db, collection = MongoDBconnection('Admin', 'Admin')
+    else:
+      return 'Authorization Not Found'
     user = json.loads(user)
     iter = collection.find({'$or':[{"Email":user['Email']},{"Mobile":user['Mobile']}]})
     if not iter.count():
@@ -61,9 +73,10 @@ def registerProduct(MainCategory, SubCategory, product):
     MainCategory = MainCategory.replace(" ","_")
     SubCategory = SubCategory.replace(" ","_")
     product = json.loads(product)
+    for index,val in enumerate(product['Quantity']):
+      for i,val in enumerate(product['Quantity'][index]["Quantities"]):
+	del product['Quantity'][index]["Quantities"][i]["$$hashKey"]
     connection, db, collection = MongoDBconnection(MainCategory, SubCategory)
-    for index, hashed in enumerate(product['Quantity']):
-      del product['Quantity'][index]['$$hashKey']
     iter = collection.find()
     if not iter.count():
       product['_id']='P_'+product['_id']+'_1'
@@ -72,10 +85,42 @@ def registerProduct(MainCategory, SubCategory, product):
     collection.insert(product)
     connection.close()
     gc.collect()
+    return 'Registered', product['_id']
+  except Exception as e:
+    return str(e), ''
+    return 'Unable to Register', '[]'
+  
+def registerBulkProduct(level1Category,fileName):
+  try:
+    connection, db, collection = MongoDBconnection('Admin', 'Categories')
+    iter = collection.find({'_id':level1Category},{"Categories":True})
+    categories = iter[0]['Categories']
+    MainCategories = []
+    for category in categories:
+      MainCategories.append(category.keys()[0])
+    records = get_data(fileName)
+    i = 1
+    while i < len(records) and i<1098:
+      product = {'Level1 Category':records[i][1], 'Main Category': records[i][2], 'Sub Category': records[i][3], 'product_name': records[i][5], 'Product Category': records[i][4], 'Quantity': [{'City':'Hyderabad', 'Quantities':[]}]}
+      product['_id']='1_'+str(MainCategories.index(records[i][2]))+'_'
+      product['_id']='1_' + str(MainCategories.index(records[i][2])) + '_' + str(categories[MainCategories.index(records[i][2])][records[i][2]].index(records[i][3]))
+      j = i
+      while records[i][5] == records[j][5]:
+	quantity = [records[j][8], int(records[j][9]), int(records[j][9]), 0, 'Available']
+	product['Quantity'][0]['Quantities'].append(quantity)
+	j=j+1
+      print json.dumps(product)
+      reply, pid = registerProduct(product['Main Category'], product['Sub Category'], str(json.dumps(product)))
+      if reply == 'Registered' and pid:
+	ProductImagePath(pid)
+      print 
+      i = j
+    connection.close()
+    gc.collect()
     return 'Registered'
   except Exception as e:
-    print str(e)
-    return 'Unable to Register'
+    return str(e)
+    return 'Unable to Register', '[]'
 
 def removeProduct(MainCategory, SubCategory, pid):
   try:
@@ -95,14 +140,13 @@ def removeProduct(MainCategory, SubCategory, pid):
   except Exception as e:
     return 'Unable to Remove'
 
-def ProductImagePath(MainCategory, SubCategory, pid):
+def ProductImagePath(pid):
   try:
-    MainCategory = MainCategory.replace(" ","_")
-    SubCategory = SubCategory.replace(" ","_")
-    path = os.getcwd()+"/Product/static/Products/"+MainCategory+"/"+SubCategory+"/"+pid+"/"
+    ids = pid.split("_")
+    path = os.getcwd()+"/Product/static/Products/"+ ids[1]+ '/'+ ids[2]+ "/"+ ids[3]+ "/"+ids[4]+"/"
     if not os.path.exists(path):
-      os.makedirs(os.getcwd()+"/Product/static/Products/"+MainCategory+"/"+SubCategory+"/"+pid+"/")
-    return os.getcwd()+"/Product/static/Products/"+MainCategory+"/"+SubCategory+"/"+pid+"/"
+      os.makedirs(os.getcwd()+"/Product/static/Products/"+ ids[1]+ '/'+ ids[2]+ "/"+ ids[3]+ "/"+ids[4]+"/")
+    return os.getcwd()+"/Product/static/Products/"+ ids[1]+ '/'+ ids[2]+ "/"+ ids[3]+ "/"+ids[4]+"/"
   except Exception as e:
     return 'Unable to fetch'
 
@@ -120,6 +164,16 @@ def AddBatch(pid, Batch):
   except Exception as e:
     print str(e)
     return 'Unable to Add'
+
+def UpdateBatch(pid, Batch):
+  try:
+    Batch = json.loads(Batch)
+    connection, db, collection = MongoDBconnection('Batches', pid)
+    collection.update({"_id":pid},Batch)
+    return "Updated"
+  except Exception as e:
+    print str(e)
+    return 'Unable to Update'
 
 def RemoveBatch(pid, BatchID):
   try:
@@ -185,6 +239,7 @@ def removeMainCategory(level1category, MainCategory):
 	collection.update({"_id":level1category},{"Categories":categories['Categories']})
 	connection.close()
 	gc.collect()
+	connection.drop_database(MainCategory)
 	return 'Removed'
     connection.close()
     gc.collect()
@@ -192,6 +247,30 @@ def removeMainCategory(level1category, MainCategory):
   except Exception as e:
     print str(e)
     return 'Unable to Remove'
+
+def editMainCategory(level1category, oldMainCategory, newMainCategory):
+  try:
+    connection, db, collection = MongoDBconnection('Admin', 'Categories')
+    iter = collection.find({"_id":level1category})
+    iter = tuple(iter)
+    for item in iter:
+      categories = dict(item)
+    for index, category in enumerate(categories['Categories']):
+      if oldMainCategory in category.keys():
+	print categories['Categories'][index]
+	del categories['Categories'][index][oldMainCategory]
+	categories['Categories'][index][newMainCategory] = categories['Categories'][index][oldMainCategory]
+	print categories['Categories'][index]
+	#collection.update({"_id":level1category},{"Categories":categories['Categories']})
+	connection.close()
+	gc.collect()
+	return 'Updated'
+    connection.close()
+    gc.collect()
+    return 'Updated'
+  except Exception as e:
+    print str(e)
+    return 'Unable to Updated'
 
 def addSubCategory(level1category, MainCategory, subCategory):
   try:
@@ -291,15 +370,172 @@ def reteriveBatches(pid):
     print str(e)
     return 'Unable to Remove'
 
+def updateProduct(product, MainCategory, SubCategory):
+  try:
+    MainCategory = MainCategory.replace(" ","_")
+    SubCategory = SubCategory.replace(" ","_")
+    connection, db, collection = MongoDBconnection(MainCategory, SubCategory)
+    collection.update({"_id":product['_id']},product)
+    return 'Updated'
+  except Exception as e:
+    return str(e)
+    return 'Update Failed'
+
+def updateBatch (pid, batch):
+  try:
+    batch = json.loads(batch)
+    connection, db, collection = MongoDBconnection('Batches', pid)
+    iter = collection.update({"_id":batch['_id']},batch)
+    return 'Updated'
+  except Exception as e:
+    print str(e)
+    return 'Unable to update'
+  
+
+def registerDeliveryBoy(user):
+  try:
+    connection, db, collection = MongoDBconnection('Admin', 'DeliveryBoy')
+    user = json.loads(user)
+    if collection.find({'$or':[{"Mobile":user['Mobile']},{"Email":user['Email']}]}).count():
+      return 'User Already Exists'
+    iter = collection.find()
+    if not iter.count():
+      user['_id']='D_1'
+    else:
+      user['_id'] = 'D_'+ str(int(iter[iter.count()-1]['_id'].split("_")[-1])+1)
+    collection.insert(user)
+    connection.close()
+    gc.collect()
+    return 'Registration Successfull'
+  except Exception as e:
+    print str(e)
+    return 'Unable to Register'
+
+def loginDeliveryBoy(user):
+  try:
+    connection, db, collection = MongoDBconnection('Admin', 'DeliveryBoy')
+    user = json.loads(user)
+    iter = collection.find({'$or':[{"Email":user['Email']},{"Mobile":user['Mobile']}]})
+    if not iter.count():
+      return "User Does't Exists", '[]'
+    if user['Password'] == iter[0]['Password']:
+      reply = iter[0]
+      connection.close()
+      gc.collect()
+      del reply['Password']
+      connection.close()
+      gc.collect()
+      return 'Login Sucess', reply
+    else:
+      connection.close()
+      gc.collect()
+      return 'Authentication Failed', '[]'
+  except Exception as e:
+    print str(e)
+    return 'Unable to Login', '[]'  
+
+def removeDeliveryBoy(id):
+  try:
+    connection, db, collection = MongoDBconnection('Admin', 'DeliveryBoy')
+    collection.remove({"_id":id})
+    connection.close()
+    gc.collect()
+    connection, db, collection = MongoDBconnection('DeliveryBoy', id)
+    collection.drop()
+    connection.close()
+    gc.collect()
+    return 'Removed'
+  except Exception as e:
+    print str(e)
+    return 'Unable to Remove'
+  
+def reterieveDeliveryBoys():
+  try:
+    connection, db, collection = MongoDBconnection('Admin', 'DeliveryBoy')
+    iter = collection.find({},{"Password":False})
+    if not iter.count():
+      return '[]'
+    connection.close()
+    gc.collect()
+    return str(json.dumps(tuple(iter)))
+  except Exception as e:
+    print str(e)
+    return 'Unable to Reterieve'
+
+def updateOrderStatus(Did, orderID, status):
+  try:
+    connection, db, collection = MongoDBconnection('DeliveryBoy', Did)
+    collection.update({"_id":orderID},{"$set":{"status":status}})
+    connection.close()
+    connection, db, collection = MongoDBconnection('Admin', 'Orders')
+    collection.update({"_id":orderID},{"$set":{"status":status}})
+    iter = tuple(collection.find({"_id":orderID}))
+    connection.close()
+    gc.collect()
+    connection, db, collection = MongoDBconnection('Customers', iter[0]['cid'])
+    collection.update({"_id":orderID},{"$set":{"status":status}})
+    connection.close()
+    gc.collect()
+    return 'Updated'
+  except Exception as e:
+    print str(e)
+    return 'Unable to Update'
+
+def VerifyOrder(Did, orderID, otp):
+  try:
+    connection, db, collection = MongoDBconnection('Admin', 'Orders')
+    iter = collection.find({"_id":orderID},{"OTP":True})
+    if iter.count() and iter[0]['OTP']== otp:
+      reply = updateOrderStatus(Did, orderID, 'Delivered')
+      if reply == 'Updated':
+	connection.close()
+	gc.collect()
+	return 'Order Delivered'
+    connection.close()
+    gc.collect()
+    return 'Invalid OTP'
+  except Exception as e:
+    print str(e)
+    return 'Unable to Update'
+
+def FetchOrders(userMode, Did):
+  try:
+    return '[{"_id":"O_101","Products":[{"ProductID":"P_101","PName":"Pepsi","Quantiy":"1 Liter","Price":"RS80"},{"ProductID":"P_102","PName":"Coca","Quantiy":"300 ML","Price":"Rs60"},{"ProductID":"P_103","PName":"Limca","Quantiy":"1 Liter","Price":"Rs90"}],"Customer Name":"Sahil Sehgal","Mobile":"9988776655","City":"Roorkee","state":"Utrakhand", "Address":"IIT Roorkee","Total amount":"1000"},{"_id":"O_102","Products":[{"ProductID":"P_110","PName":"Goodday","Quantiy":"1 Packet","Price":"Rs10"},{"ProductID":"P_112","PName":"50-50 Biscuits","Quantiy":"300gm","Price":"Rs20"},{"ProductID":"P_103","PName":"Limca","Quantiy":"1 Liter","Price":"Rs90"}],"Customer Name":"Sandeep","Mobile":"9188776655","City":"Hyderabad","state":"Andhra Pardesh", "Address":"RamKoti","Total amount":"2000"}]'
+    connection, db, collection = MongoDBconnection(userMode, Did)
+    if userMode == 'DeliveryBoy':
+      iter = collection.find({"status":"Pending"})
+    else:
+      iter = collection.find()
+    if not iter.count():
+      return '[]'
+    return str(json.dumps(tuple(iter)))
+  except Exception as e:
+    print str(e)
+    return 'Unable to Fetch'
+
+def testing():
+  connection, db, collection = MongoDBconnection('Admin', 'Orders')
+  connection.admin.command('copydb', fromdb='sample', todb='newsam')
+  return '' 
+
 if __name__ == '__main__':
+  #print testing()
+  print registerBulkProduct('Grocery','Prodduct List new.xlsx')
+  #print editMainCategory('Medicines', 'Corosin', 'Antibiotics')
+  #print ProductImagePath('P_1_0_1_1')
+  #print removeDeliveryBoy('D_1')
+  #print reterieveDeliveryBoys()
+  #registerDeliveryBoy('{"Mobile":"9780008628","Email":"sahil@gmail.com", "Password":"1234", "Name":"Sahil"}')
+  #print VerifyOrder('D_1',"O_102",'9182')
+  #print updateProduct('{"_id":"123", "Name":"Sahil","Category":["Val1", "val2"]}', 'Bakery', 'Cakes')
   #print reteriveProducts('Bakery','Cakes')
   #print reteriveCategories()
   #print addSubCategory('Grocery', 'Bakery', 'Cakes')
-  print removeSubCategory('Grocery', 'Pulses and Grains', 'Dals')
+  #print removeSubCategory('Grocery', 'Pulses and Grains', 'Dals')
   #print removeMainCategory('Grocery', 'Medicines')
   #print addMainCategory('Grocery', 'Medicines')
-  #print removelevel1Category('Grocery')
-  #print addlevel1Category('Grocery')
+  #print removelevel1Category('Electricals')
+  #print addlevel1Category('Electricals')
   #print RemoveBatch('P_1_1_1',"B_3")
   #print AddBatch('P_1_1_1','{"Product Name": "Cocacola", "Quantity":10, "Quantity Unit":"Number", "SP":15, "CP":18}')
   #print registerAdmin('{"Name":"Sahil","Password":"123456","Mobile":"9780008628","Email":"sahilsehgal1995@gmail.com"}')

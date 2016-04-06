@@ -1,0 +1,158 @@
+	<div ng-controller="cartItems">
+	<section id="cart_items"  >
+		<div class="container" >
+			<div class="breadcrumbs">
+				<ol class="breadcrumb">
+				  <li><a href="#">Home</a></li>
+				  <li class="active">Shopping Cart</li>
+	{{Products}}			</ol>
+			</div>
+			<div ng-show="message">
+			<div class="table-responsive cart_info" >
+				<table class="table table-condensed">
+					<thead>
+						<tr class="cart_menu">
+							<td width="150px" class="image">Item</td>
+							<td class="price">Name</td>
+							<td class="quantity">Price</td>
+							<td class="total">Quantity</td>
+							<td class="price">Total Price</td>
+							<td>Delete</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat ="p in Products">
+							
+							<td  width="150px" class="cart_product">
+							<img class="img" ng-src="http://shopkare.com{{p[0][0]}}" alt="{{p[0][0]}}" height="100px" width="100px">
+							</td>	
+							<td class="cart_price">
+								<p>{{p.product_name}}</p>
+							</td>
+							<td class="cart_total">
+								<p>{{p.QuantityType}}</p>
+								<p class="cart_total_price">Rs.{{p.Price}}</p>
+							</td>		
+							<td class="cart_total">
+								<div class="cart_quantity_button">
+									<a class="cart_quantity_up"><button ng-click="addQuantity(p[5],$index)">+</button> </a>
+									<input class="cart_quantity_input" type="text" name="quantity" readonly value="1" ng-model="p.Quantity" size="2">
+									<a class="cart_quantity_up"><button ng-disabled="p.Quantity==1" ng-click="subQuantity(p.,$index)">--</button> </a>
+								</div>
+							</td>
+							
+							<td class="cart_total">
+								<p class="cart_total_price">Rs.{{p.Price*p.Quantity}}</p>
+							</td>
+							<td class="cart_delete">
+								<a ng-click="removeFromcart(p,$index)" class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+				<br>
+			<a href="http://shopkare.com/static/home.html#/checkout"ng-show="login" ><center><button class="btn btn-block btn-info" ng-click="updateCart()"> Finialise Your Order </button></center></a>
+
+<center> <button type="button" class="btn btn-success"  ng-show="!login"  data-toggle="modal" data-target="#myModal"> Finialise Your Order </button> </center>
+
+			</div>
+		
+	<div ng-hide="message">
+				<h2>Your Shopping Cart is empty.</h2>
+			<p>Your Shopping Cart lives to serve. Give it purpose--fill it with Items.
+				</P>
+			<div class="row">
+			<p>
+				<a href="http://shopkare.com/static/index.html"><button class="btn btn-success" > Continue Shopping </button></a>  on the <a href="http://shopkare.com/static/home.html"> ShopKare.com</a> homepage, learn about today's deals and special offers....
+			</p>	<br>
+				
+			</div>
+		
+			<p>
+				The price and availability of items at Shopkare.com are subject to change. The shopping cart is a temporary place to store a list of your items and reflects each item's most recent price. 
+				</p>
+		</div>
+	</div>
+	</section>
+
+<br>
+<!--
+	<section id="do_action"  ng-controller="cartItems" ng-show="message">
+		<div class="container">
+			<div class="heading">
+				<h3>What would you like to do next?</h3>
+				<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="chose_area">
+						<ul class="user_option">
+							<li>
+								<input type="checkbox">
+								<label>Use Coupon Code</label>
+							</li>
+							<li>
+								<input type="checkbox">
+								<label>Use Gift Voucher</label>
+							</li>
+							<li>
+								<input type="checkbox">
+								<label>Estimate Shipping & Taxes</label>
+							</li>
+						</ul>
+						<ul class="user_info">
+							<li class="single_field">
+								<label>Country:</label>
+								<select>
+									<option>United States</option>
+									<option>Bangladesh</option>
+									<option>UK</option>
+									<option>India</option>
+									<option>Pakistan</option>
+									<option>Ucrane</option>
+									<option>Canada</option>
+									<option>Dubai</option>
+								</select>
+								
+							</li>
+							<li class="single_field">
+								<label>Region / State:</label>
+								<select>
+									<option>Select</option>
+									<option>Dhaka</option>
+									<option>London</option>
+									<option>Dillih</option>
+									<option>Lahore</option>
+									<option>Alaska</option>
+									<option>Canada</option>
+									<option>Dubai</option>
+								</select>
+							
+							</li>
+							<li class="single_field zip-field">
+								<label>Zip Code:</label>
+								<input type="text">
+							</li>
+						</ul>
+						<a class="btn btn-default update" href="">Get Quotes</a>
+						<a class="btn btn-default check_out" href="">Continue</a>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="total_area">
+						<ul>
+							<li>Cart Sub Total <span>Rs.59</span></li>
+							<li>Extra Tax <span>Rs.2</span></li>
+							<li>Shipping Cost <span>Free</span></li>
+							<li>Total <span>Rs.61</span></li>
+						</ul>
+							<a class="btn btn-default update" href="">Update</a>
+							<a class="btn btn-default check_out" href="">Check Out</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>--><!--/#do_action-->
+</div>

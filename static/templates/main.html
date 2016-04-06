@@ -1,0 +1,123 @@
+<script type="text/javascript" src="js/jssor.slider.min.js"></script>
+    <!-- use jssor.slider.debug.js instead for debug -->
+   
+    <style>
+        
+        /* jssor slider bullet navigator skin 05 css */
+        /*
+        .jssorb05 div           (normal)
+        .jssorb05 div:hover     (normal mouseover)
+        .jssorb05 .av           (active)
+        .jssorb05 .av:hover     (active mouseover)
+        .jssorb05 .dn           (mousedown)
+        */
+        .jssorb05 {
+            position: absolute;
+        }
+        .jssorb05 div, .jssorb05 div:hover, .jssorb05 .av {
+            position: absolute;
+            /* size of bullet elment */
+            width: 16px;
+            height: 16px;
+            background: url('img/b05.png') no-repeat;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .jssorb05 div { background-position: -7px -7px; }
+        .jssorb05 div:hover, .jssorb05 .av:hover { background-position: -37px -7px; }
+        .jssorb05 .av { background-position: -67px -7px; }
+        .jssorb05 .dn, .jssorb05 .dn:hover { background-position: -97px -7px; }
+
+        /* jssor slider arrow navigator skin 22 css */
+        /*
+        .jssora22l                  (normal)
+        .jssora22r                  (normal)
+        .jssora22l:hover            (normal mouseover)
+        .jssora22r:hover            (normal mouseover)
+        .jssora22l.jssora22ldn      (mousedown)
+        .jssora22r.jssora22rdn      (mousedown)
+        */
+        .jssora22l, .jssora22r {
+            display: block;
+            position: absolute;
+            /* size of arrow element */
+            width: 40px;
+            height: 58px;
+            cursor: pointer;
+            background: url('img/a22.png') center center no-repeat;
+            overflow: hidden;
+        }
+        .jssora22l { background-position: -10px -31px; }
+        .jssora22r { background-position: -70px -31px; }
+        .jssora22l:hover { background-position: -130px -31px; }
+        .jssora22r:hover { background-position: -190px -31px; }
+        .jssora22l.jssora22ldn { background-position: -250px -31px; }
+        .jssora22r.jssora22rdn { background-position: -310px -31px; }
+    </style>
+  <div class="container">
+
+  
+  <div class="col-sm-3">
+          <div class="left-sidebar">
+            <h2>Category</h2>
+
+            <div class="panel-group category-products" id="accordian" style="margin-top:-20px"><!--category-productsr-->
+
+              <div class="panel panel-default" ng-repeat ="data in level2Categories">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordian" href="/#{{level2CategoriesWTF[$index]}}">
+                      <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                      {{data}}
+                    </a>
+                  </h4>
+                </div>
+                <div id="{{level2CategoriesWTF[$index]}}" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <ul>
+                      <li ng-repeat="z in level3Categories[$index]" ng-click="GETProducts(data,z)"><a ui-sref=".products">{{z}}</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+            </div><!--/category-products-->
+          
+            <div ui-view="menuOtherOption">
+            </div>
+
+            
+          </div>
+        </div>
+
+  <div class="col-sm-9">
+        
+ <div ui-view ="slider"></div>
+  
+  </div>
+
+  
+  
+  </div>
+  
+  <br>
+  <section>
+    <div class="container">
+      <div class="row">
+      
+      
+      
+        <div class="col-sm-3">
+          
+           <div ui-view="leftAdd"></div>
+
+        </div>
+        
+        <div class="col-sm-9 padding-right">
+          
+            <div ui-view="indexProducts"></div>    
+     
+        </div>
+      </div>
+    </div>
+  </section>

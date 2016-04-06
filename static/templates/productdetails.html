@@ -1,0 +1,86 @@
+		<div class="product-details">
+						<!--product-details-->
+						<div class="col-sm-5">
+							<div class="view-product">
+								<img ng-src="http://shopkare.com/{{ProductDT.images[initialImage]}}" alt="" />
+							
+							</div>								
+						<div id="similar-product" ng-show="ProductDT.images[2]" class="carousel slide" data-ride="carousel">
+								
+								  <!-- Wrapper for slides -->
+								    <div class="carousel-inner">
+										<div class="item active"  style='padding-left:30px'>
+										  <a href=""><img ng-src="http://shopkare.com/{{ProductDT.images[2]}}" ng-click="changeImage(2)" alt="" width="60px" /></a>
+										  <a href=""><img ng-src="http://shopkare.com/{{ProductDT.images[1]}}" ng-click="changeImage(1)" alt="" width="60px" /></a>
+										  <a href=""><img ng-src="http://shopkare.com/{{ProductDT.images[3]}}" ng-click="changeImage(3)" alt="" width="60px" /></a>
+										</div>
+										<div class="item"  style='padding-left:30px'>
+										  <a href=""><img ng-src="http://shopkare.com/{{ProductDT.images[3]}}" ng-click="changeImage(3)" alt="" width="60px" /></a>
+										  <a href=""><img ng-src="http://shopkare.com/{{ProductDT.images[2]}}" ng-click="changeImage(2)" alt="" width="60px" /></a>
+										  <a href=""><img ng-src="http://shopkare.com/{{ProductDT.images[1]}}" ng-click="changeImage(1)" alt="" width="60px" /></a>
+										</div>
+										<div class="item"  style='padding-left:30px'>
+										  <a href=""><img ng-src="http://shopkare.com/{{ProductDT.images[2]}}" ng-click="changeImage(2)" alt="" width="60px"/></a>
+										  <a href=""><img ng-src="http://shopkare.com/{{ProductDT.images[3]}}" ng-click="changeImage(3)" alt="" width="60px" /></a>
+										  <a href=""><img ng-src="http://shopkare.com/{{ProductDT.images[1]}}" ng-click="changeImage(1)" alt="" width="60px" /></a>
+										</div>
+										
+									</div>
+
+								  <!-- Controls -->
+								  <a class="left item-control" href="#similar-product" data-slide="prev">
+									<i class="fa fa-angle-left"></i>
+								  </a>
+								  <a class="right item-control" href="#similar-product" data-slide="next">
+									<i class="fa fa-angle-right"></i>
+								  </a>
+							</div>
+						</div>
+
+						<div class="col-sm-7">
+							<div class="product-information"><!--/product-information-->
+								<img src="images/product-details/new.jpg" class="newarrival" alt="" />
+								<h1>{{ProductDT.product_name}}</h1>
+								<select ng-model="k" ng-init="k='0'" style="max-width:35%">
+											<option value ="{{$index}}" ng-repeat="k in ProductDT.Quantity[0].Quantities">{{k[0]}}</option>
+									</select>
+									<br>
+								<span>
+									<p ng-show="ProductDT.discount[k]" ><b>Price</b> :<a class="orgPrice"> Rs.{{ProductDT.Quantity[0].Quantities[k][2]}}</a><br>
+									</p>
+
+<div class="cart_quantity_button">
+				<a class="cart_quantity_up"><button ng-click="addQuantity(k)">+</button> </a>
+			<input class="cart_quantity_input" type="text" name="quantity" readonly value="1" ng-model="ProductDT.cartQty[k]" size="2">
+			<a class="cart_quantity_up"><button ng-disabled="ProductDT.cartQty[k]==1" ng-click="subQuantity(k)">--</button> </a>
+<br><br></div>
+
+									<span>Rs {{ProductDT.Quantity[0].Quantities[k][1]*ProductDT.cartQty[k]}}</span>
+									
+ <a  ng-show="!login"  ng-click="loginError()" data-toggle="modal" data-target="#myModal" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{ProductDT.cart[k]}}</a>
+
+<span ng-show="login">						
+
+	
+<a ng-show="ProductDT.cart[k]=='Add to Cart'" ng-click="addCart(ProductDT,k)"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{ProductDT.cart[k]}}</a>
+
+										<a ng-show="ProductDT.cart[k]=='Already in Cart'" ng-disable="ProductDT.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{ProductDT.cart[k]}}</a>
+
+										<a ng-show="ProductDT.cart[k]=='Added in Your Cart'" ng-disable="ProductDT.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{ProductDT.cart[k]}}</a>
+
+								</span>
+</span>		
+						<p ng-show="ProductDT.Quantity[0].Quantities[k][3]"><b>You Save : Rs {{ProductDT.Quantity[0].Quantities[k][3]}}</b></p>
+								<p><b>Description:</b> {{ProductDT.description}}</p>
+								<p><b>Availability:</b> {{ProductDT.Quantity[0].Quantities[k][4]}}</p>
+								
+							</div><!--/product-information-->
+						</div>
+					</div><!--/product-details-->
+					
+					<style>
+.orgPrice{
+   text-decoration: line-through;
+
+}
+</	style>

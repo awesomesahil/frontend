@@ -1,12 +1,26 @@
-(function() {
+(function(){
 
-  var app = angular.module('ShopKare_Backend-master', []);
-//   var base = 'http://127.0.0.1:5000';
+var app=angular.module('ShopKare_Backend-master',[]);
   var base = 'http://shopkare.com';
-  
+
+
+
   var categories = [];
   var level1keys= [];
    app.controller('AppCTRL',['$scope','$http', '$window',function($scope, $http, $window){
+	$scope.OptionsProduct=['Available','Coming Soon','Out of Stock'];
+  
+var AdminType=localStorage.getItem("ShopkareAdminType"); 
+console.log(AdminType);
+if(AdminType=='Super Admin'){
+$scope.AdminSuper=true;
+}
+else{
+$scope.AdminSuper=false;
+}
+
+
+	$scope.editD={};
 	  console.log('App control');
      $http.post(base+'/api/Admin/reteriveCategories/')
  	.success(function(data){
@@ -83,12 +97,18 @@
     };
     
    $scope.getProducts=function(){
-     $http.post("/api/admin/getProducts/?maincategory="+$scope.MAINCATEGORY+"&subcategory="+$scope.SUBCATEGORY)
+    
+    $http.get("http://shopkare.com/api/Product/getCategoryProducts/?level1Category=Grocery&MainCategory="+$scope.MAINCATEGORY+"&SubCategory="+$scope.SUBCATEGORY)
+	.success(function(response){
+	$scope.ImageDATA=response;
+	})
+	.error(function(response){
+	console.log(response);
+	})
+	 $http.post("/api/admin/getProducts/?maincategory="+$scope.MAINCATEGORY+"&subcategory="+$scope.SUBCATEGORY)
      .success(function(response) {
-       $scope.reply=response;
-       $scope.products=response;
-       console.log($scope.reply);
-       //$window.location.href=base+"/Admin/static/products.html";
+      $scope.products=response;
+              
      })
      .error(function(error){
        $scope.error=error;
@@ -116,9 +136,17 @@
      $scope.selectproducts=function(){
        $scope.product=$scope.products[$scope.productindex];
        console.log($scope.product);
-       $scope.quantity=$scope.products[$scope.productindex].Quantity;
-       console.log($scope.quantity);
-       
+       $scope.quantityBatchUse=JSON.parse(JSON.stringify($scope.products[$scope.productindex].Quantity[0].Quantities));
+ console.log($scope.quantityBatchUse);
+      $scope.qtyBatchUse=[];
+	console.log($scope.quantityBatchUse.length); 
+	console.log($scope.quantityBatchUse);
+     for(var z in $scope.quantityBatchUse){
+          $scope.qtyBatchUse.push($scope.quantityBatchUse[z][0]);
+   }
+
+
+
         var x=$scope.productindex;
    console.log(x);
    $scope.p_id=$scope.products[x]._id;  
@@ -152,7 +180,117 @@
 	
       };
    
-  
+	$scope.set_edit=function(product,index){
+	console.log(product);
+	console.log(index);
+	$scope.edit=product;
+	$scope.editIndex=index;
+};
+ 
+
+   $scope.getFileDetails = function (e) {
+
+            $scope.files = [];
+            $scope.$apply(function () {
+
+                // STORE THE FILE OBJECT IN AN ARRAY.
+                for (var i = 0; i < e.files.length; i++) {
+                    $scope.files.push(e.files[i])
+                }
+
+            });
+        };
+
+
+
+	  $scope.uploadFiles = function (p) {
+	
+		console.log(p);
+		delete p['$$hashKey'];
+             $scope.status="Please while the products are being Uploaded..."
+            //FILL FormData WITH FILE DETAILS.
+            console.log("Sumitted");
+            var data = new FormData();
+            console.log($scope.files);
+            for (var i in $scope.files) {
+		console.log($scope.files[i]);
+                data.append("uploadedFile", $scope.files[i]);
+            }
+		console.log(data);
+            // ADD LISTENERS.
+         /*   var objXhr = new XMLHttpRequest();
+            objXhr.addEventListener("progress", updateProgress, false);
+            objXhr.addEventListener("load", transferComplete, false);
+
+ // SEND FILE DETAILS TO THE API.
+            objXhr.open("POST", base+"/api/Admin/updateProduct/?product="+JSON.stringify(p));
+           objXhr.send(data);
+       */ }
+
+   // UPDATE PROGRESS BAR.
+        function updateProgress(e) {
+//             if (e.lengthComputable) {
+//                 document.getElementById('pro').setAttribute('value', e.loaded);
+//                 document.getElementById('pro').setAttribute('max', e.total);
+//             }
+        }
+
+        // CONFIRMATION.
+        function transferComplete(e) {
+         $scope.products.splice($scope.editIndex,1,$scope.edit);
+        $scope.edit={};
+        $scope.editD={};
+
+        }
+
+
+	$scope.saveData=function(p){
+
+	console.log(p);
+	delete p['$$hashKey'];
+
+	$http.post(base+'/api/Admin/updateProduct/?product='+JSON.stringify(p)) .success(function(data){
+	console.log(data);
+	$scope.products.splice($scope.editIndex,1,$scope.edit);
+	$scope.edit={};
+	$scope.editD={};
+	})
+.error(function(response){
+	console.log(response);
+	});
+	};
+
+
+	$scope.deleteQuantity=function(data,key){
+	
+	console.log(data);
+	console.log(key);
+	var k=$scope.products.indexOf(data);
+	console.log(k);
+
+	$scope.products[k].Quantity[0].Quantities.splice(key,1);
+	
+	console.log($scope.products[k]);
+
+ 	delete $scope.products[k]['$$hashKey'];
+	console.log(base+'/api/Admin/updateProduct/?product='+JSON.stringify($scope.products[k]));
+	$http.post(base+'/api/Admin/updateProduct/?product='+JSON.stringify($scope.products[k])) .success(function(data){
+	console.log(data);
+	})
+.error(function(response){
+	console.log(response);
+	});	
+	};
+
+	$scope.addNewQuantity=function(id){
+	
+	console.log(id);	
+	
+	var k=$scope.products.indexOf(id);
+	var q=["","0","0","0","Available"];
+	$scope.products[k].Quantity[0].Quantities.push(q);	
+	}
+
    }]);
    
    

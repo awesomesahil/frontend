@@ -65,7 +65,7 @@
         <!-- /. NAV TOP  -->
         <nav  class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
-                <ul class="nav" id="main-menu">
+                <ul class="nav" id="main-menu" ng-controller="addlevel1category">
                     <li>
                         <div class="user-img-div">
                             <img src="http://shopkare.com/Admin/static/assets/img/user.png" class="img-circle" />
@@ -97,7 +97,16 @@
 					<li>
                         <a    href="http://shopkare.com/Admin/static/batches.html"><i class="fa fa-dashcube "></i>Batches</a>
                     </li>
-                   
+<li >
+                        <a    href="http://shopkare.com/Admin/static/addDeliveryboy"><i class="fa fa-bolt "></i>Add Delivery Boy</a>
+                    </li>
+
+  <li>
+                        <a  ng-show="AdminSuper"  href="http://shopkare.com/Admin/static/superUser.html"><i class="fa fa-bolt "></i>Approve Changes</a>
+                    </li>
+
+
+ 
                 </ul>
             </div>
 
@@ -118,22 +127,17 @@
 
                     <div style="padding-top:30px" class="panel-body" >
 
-                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-                            
-                       
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>  
                                     
     <form ng-controller="addlevel1category">
 	<fieldset class="form-group">
-    
+    <center><label for="text">{{message}}</label></center>
     <label for="text">Enter Level 1 Category</label>
     <input type="text" class="form-control" id="text" value="Grocery"  ng-model="level1category" placeholder="Product Name">
   </fieldset>
-	{{message}}<br>
   <button type="submit" value="submit" ng-click="addlevel1category()" class="btn btn-primary">Submit</button>
 </form>    
                             
-
-
 
                         </div>                     
                     </div>  
@@ -141,6 +145,33 @@
        
     </div>	
 
+
+<div class="container" style="margin-top:30px" >    
+        <div id="loginbox" style="margin-top:30px;" class="mainbox col-md-6  col-sm-8 ">                    
+            <div class="panel panel-info" >
+                    <div class="panel-heading">
+                        <div class="panel-title">Remove  Level 1 Category</div>
+                        <div style="float:right; font-size: 80%; position: relative; top:-10px"></div>
+                    </div>     
+
+                    <div style="padding-top:30px" class="panel-body" >
+
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+<form ng-controller="addmaincategory">	
+    <div class="dropdown">
+<center><label for="text">
+    {{message}}</label></center>
+    <label for="text">Select Level 1 Category</label> &nbsp;
+
+    <select class="btn btn-default dropdown-toggle" type="button" ng-model="rml1category">  
+   <option value="{{category}}" ng-repeat="category in categories">{{category._id}} </option>
+    </select>
+<br>  
+  <button type="submit" name="submit" ng-click="removelevelonecategory(rml1category)" class="btn btn-primary">Submit</button>
+</div>
+</div>  </div>
+</form> 
+</div></div></div>
 <div class="container" >    
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6  col-sm-8 ">                    
             <div class="panel panel-info" >
@@ -153,15 +184,11 @@
 
                         <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
                             
-                       
                                     
 <form ng-controller="addmaincategory">
-    {{message}}
-				<div class="dropdown">
-	
     <div class="dropdown">
+	<center><label for="text">{{message}}</label></center>
     <label for="text">Select Level 1 Category</label> &nbsp;
-
     <select class="btn btn-default dropdown-toggle" type="button" ng-model="l1category" ng-change="selectLevel1Category()">  
     <option value="{{category}}" ng-repeat="category in categories">{{category._id}} </option>
     </select>
@@ -170,15 +197,56 @@
     <label for="text">Enter Main Category</label>
     <input type="text" ng-model="Maincategory" class="form-control" id="text" placeholder="Product Name">
   </fieldset>
- </div>
-	<br>
+
   <button type="submit" name="submit" ng-click="add_new_category_database()" class="btn btn-primary">Submit</button>
 </form>    
                         </div>                     
                     </div>  
         </div>
+ </div>
+
+
+<div class="container" >    
+        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6  col-sm-8 ">                    
+            <div class="panel panel-info" >
+                    <div class="panel-heading">
+                        <div class="panel-title">Remove MainCategory</div>
+                       </div>     
+
+                    <div style="padding-top:30px" class="panel-body" >
+
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                            
+                       
+                                    
+    <form  ng-controller="addsubcategory">					
+<div class="dropdown">
+	<center><label for ="text">{{message}}</label></center>
+    <label for="text">Select Level 1 Category</label> &nbsp;
+
+ <select class="btn btn-default dropdown-toggle" type="button" ng-model="l1category" ng-change="selectLevel1Category()">  
+    <option value="{{category}}" ng-repeat="category in categories">{{category._id}} </option>
+    </select>
+  </div>
+<div class="dropdown">
+    <label for="text">Select Main Category</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <select class="btn btn-default dropdown-toggle" ng-model="removeMainCategory" type="button" >  
+      <option value="{{$index}}" ng-repeat="maincategory in mainCategories">{{maincategory}}</option>
+    </select>
+</div>
+ &nbsp;<button type="submit" value="submit" name="submit" ng-click="rmMainCategory(removeMainCategory)" class="btn btn-primary">Submit</button>
+  
+  </div>
+  
+</form>    
+ </div>                     
+     </div>  
+        </div>
        
-    </div>
+
+
+
+
 
 <div class="container" >    
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6  col-sm-8 ">                    
@@ -196,7 +264,7 @@
                                     
     <form  ng-controller="addsubcategory">					
 <div class="dropdown">
-    <label for="text">Select Level 1 Category</label> &nbsp;
+<center><label for="text">{{response1}}</label></center>    <label for="text">Select Level 1 Category</label> &nbsp;
 
     <select class="btn btn-default dropdown-toggle" type="button" ng-model="l1category" ng-change="selectLevel1Category()">  
     <option value="{{category}}" ng-repeat="category in categories">{{category._id}} </option>
@@ -212,7 +280,7 @@
     <label for="text">Enter Sub Category</label>
     <input type="text" ng-model="subCategory" class="form-control" id="text" placeholder="Add Sub Level Category">
   </fieldset>
-{{response1}}&nbsp;<button type="submit" value="submit" name="submit" ng-click="add_new_subCategory()" class="btn btn-primary">Submit</button>
+&nbsp;<button type="submit" value="submit" name="submit" ng-click="add_new_subCategory()" class="btn btn-primary">Submit</button>
   
   </div>
   
@@ -222,6 +290,48 @@
         </div>
        
     </div>		
+<div class="container" >    
+        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6  col-sm-8 ">                    
+            <div class="panel panel-info" >
+                    <div class="panel-heading">
+                        <div class="panel-title">Remove Subcategory</div>
+                    </div>     
+
+                    <div style="padding-top:30px" class="panel-body" >
+
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                            
+                       
+                                    
+    <form  ng-controller="addsubcategory">					
+<div class="dropdown">
+<center><label for ="text">{{message}}</label></center>
+<label for="text">Select Level 1 Category</label> &nbsp;
+
+    <select class="btn btn-default dropdown-toggle" type="button" ng-model="l1category" ng-change="selectLevel1Category()">  
+    <option value="{{category}}" ng-repeat="category in categories">{{category._id}} </option>
+    </select>
+  </div>
+<div class="dropdown">
+    <label for="text">Select Main Category</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <select class="btn btn-default dropdown-toggle" ng-model="mainCategory" type="button" ng-change="selectmainCategory()">  
+      <option value="{{$index}}" ng-repeat="maincategory in mainCategories">{{maincategory}}</option>
+    </select>
+</div>
+<div class="dropdown">
+    <label for="text">Select Sub  Category</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <select class="btn btn-default dropdown-toggle" ng-model="removesubCategory" type="button" >  
+      <option value="{{$index}}" ng-repeat="subcategory in subcategories track by $index">{{subcategory}}</option>
+    </select>
+</div>
+&nbsp;
+<button type="submit" value="submit" name="submit" ng-click="rmsubCategory(removesubCategory)" class="btn btn-primary">Submit</button>
+  
+  </div>  
+</form>    
+ </div>                     
+     </div>  
+        </div>
 	 
 </div>
 	 

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="ShopKare_Backend-master">
 <head>
   <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,8 +9,7 @@
  Angular js Codes     -->
 
         <script type="text/javascript" src="http://shopkare.com/Admin/static/js/angular.min.js"></script>
-        <script type="text/javascript" src="http://shopkare.com/Admin/static/js/app.js"></script>
-
+        <script type="text/javascript" src="http://shopkare.com/Admin/static/js/Controllers/orders.js"></script>
 
 
     <link href="http://shopkare.com/Admin/static/assets/css/bootstrap.css" rel="stylesheet" />
@@ -20,7 +19,7 @@
     <link href="http://shopkare.com/Admin/static/assets/css/style.css" rel="stylesheet" />
      
 </head>
-<body>
+<body ng-controller="orders">
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -87,7 +86,20 @@
                    <li>
                         <a    href="http://shopkare.com/Admin/static/batches.html"><i class="fa fa-dashcube "></i>Batches</a>
                     </li>
-                </ul>
+<li>
+                        <a    href="http://shopkare.com/Admin/static/superUser.html"><i class="fa fa-bolt "></i>Add Delivery Boy</a>
+                    </li>
+
+
+
+  <li>
+                        <a  ng-show="AdminSuper"  href="http://shopkare.com/Admin/static/superUser.html"><i class="fa fa-bolt "></i>Approve Changes</a>
+                    </li>
+
+
+
+
+</ul>
             </div>
 
         </nav>
@@ -97,28 +109,17 @@
              <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-head-line">Orders</h1>
-						  <table class="table table-hover table-bordered">
-    <thead>
-      <tr>
-        <th>Serial No.</th>
-        <th>Product</th>
-        <th>P_Id</th>
-		<th>Customer</th>
-		<th>Status</th>
-		<th>Details</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>Tea</td>
-		<td>15</td>
-        <td>Ram</td>
-		<td>Delivered</td>
-		<th>	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Details</button> </th>
-	
+<br>
+<section ng-init="tab=1">
+<ul class=" nav nav-tabs nav-justified">
+<li ng-class="{ active : tab === 1 } "> <a href ng-click="tab=1"><h4>Fresh Orders</h4></a></li>
+<li ng-class="{ active : tab === 2 }"> <a href ng-click="tab=2"><h4>Pending List</h4></a></li>
+<li ng-class="{ active : tab ===3 }"> <a href ng-click="tab=3"><h4> Delivered</h4></a></li>
+</ul>
+</section>  
 
-  <!-- Modal -->
+
+<!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -170,164 +171,91 @@
     </div>
   </div>
 </div>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>Tea</td>
-		<td>15</td>
-        <td>Ram</td>
-		<td>Pending</td>
-		<th>	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Details</button> </th>
-	
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Order Details</h4>Tea
-        </div>
-        <div class="modal-body">
-       
-	   <form class="form-horizontal">
-    <div class="form-group">
-        <label for="inputEmail" class="control-label col-xs-2">Order No.</label>
-        <div class="col-xs-10">
-            <input type="email" class="form-control" id="inputEmail" placeholder="Order No.">
-        </div>
-    </div> <br>
-    <div class="form-group">
-        <label for="inputEmail" class="control-label col-xs-2">Customer</label>
-        <div class="col-xs-10">
-            <input type="email" class="form-control" id="inputPassword" placeholder="Customer">
-        </div>
-    </div> <br>
-	<div class="form-group">
-        <label for="inputEmail" class="control-label col-xs-2">Address</label>
-        <div class="col-xs-10">
-            <input type="email" class="form-control" id="inputEmail" placeholder="Address">
-        </div>
-    </div> <br>
-	<div class="form-group">
-        <label for="inputEmail" class="control-label col-xs-2">Delivery Boy</label>
-        <div class="col-xs-10">
-            <input type="email" class="form-control" id="inputEmail" placeholder="Deliverey Boy">
-        </div>
-    </div> <br>
-    
-    <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-10">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-		<br>
-    </div>
-</form>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-      </tr>
-      </tr>
-     <tr>
-        <td>1</td>
-        <td>Tea</td>
-		<td>15</td>
-        <td>Ram</td>
-		<td>On Way</td>
-		<th>	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Details</button> </th>
-	
    <!-- Angular Code ng-repeat -->
- <table class="table table-hover table-bordered" ng-controller="orders_data">
+     <div class="panel" ng-show ="tab === 1">
+ <table class="table table-hover table-bordered">
     <thead>
       <tr>
-        <th>Serial No.</th>
-        <th>Product</th>
-        <th>P_Id</th>
+        <th>Order Id</th>
+	<th>Product</th>
         <th>Customer</th>
+	<th>Delivery Address</th>
         <th>Status</th>
-        <th>Details</th>
+	<th>Amount</th>
+        <th>Assign Delivery Boy</th>
+	<th>Save Changes</th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="item in orders">
-        <td>{{item.id}}</td>
-        <td>{{item.product}}</td>
-        <td>{{item.p_id}}</td>
-        <td>{{item.customer}}</td>
-        <td>{{item.status}}</td>
-        <th>    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Details</button> </th>
-    
+	 <tr ng-repeat="item in OrdersProducts" ng-show="item.Status=='Fresh'">
+        <td>{{item._id}}</td>
+        <td><span ng-repeat="p in item.Products">{{p.ProductID}}-->>{{p.PName}}<br>{{p.Quantiy}} -->>{{p.Price}}<hr></span></td>
+        <td>{{item['Customer Name']}}</td>
+      	<td>{{item.Address}},{{item.city}},{{item.state}}</td>
+	<td>{{item.Status}}</td>
+	<td>{{item['Total amount']}}</td>
+	<td><select ng-model='db'>
+	 <option value="None">Select Deliver Boy</option><option ng-repeat="dbBoy in deliveryBoys" value="{{dbBoy._id}}" >{{dbBoy.Name }}-->> {{ dbBoy.UID}}</option>	</select></td>       
+<td><button type="button" class="btn btn-info" ng-click="dbOperation(item,db,$index)"  ng-disabled="db=='None'">Save</button> </td>
 
-
-<!-- Angular Code ng-repeat -->
-
-
- 
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Order Details</h4>
-        </div>
-        <div class="modal-body">
-       
-	   <form class="form-horizontal">
-    <div class="form-group">
-        <label for="inputEmail" class="control-label col-xs-2">Order No.</label>
-        <div class="col-xs-10">
-            <input type="email" class="form-control" id="inputEmail" placeholder="Order No.">
-        </div>
-    </div> <br>
-    <div class="form-group">
-        <label for="inputEmail" class="control-label col-xs-2">Customer</label>
-        <div class="col-xs-10">
-            <input type="email" class="form-control" id="inputPassword" placeholder="Customer">
-        </div>
-    </div> <br>
-	<div class="form-group">
-        <label for="inputEmail" class="control-label col-xs-2">Address</label>
-        <div class="col-xs-10">
-            <input type="email" class="form-control" id="inputEmail" placeholder="Address">
-        </div>
-    </div> <br>
-	<div class="form-group">
-        <label for="inputEmail" class="control-label col-xs-2">Delivery Boy</label>
-        <div class="col-xs-10">
-            <input type="email" class="form-control" id="inputEmail" placeholder="Deliverey Boy">
-        </div>
-    </div> <br>
-    
-    <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-10">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-		<br>
-    </div>
-</form>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-      </tr>      </tr>
+     </tr>     
     </tbody>
   </table>
-
-                    </div>
-                </div>
+</div>
+     <div class="panel" ng-show ="tab ===2">
+ <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>Order Id</th>
+	<th>Product</th>
+        <th>Customer</th>
+	<th>Address</th>
+        <th>Status</th>
+	<th>Amount</th>
+        <th>Delivery Boy</th>
+      </tr>
+    </thead>
+    <tbody>
+	 <tr ng-repeat="item in OrdersProducts" ng-show="item.Status=='Pending'">
+        <td>{{item._id}}</td>
+        <td><span ng-repeat="p in item.Products">{{p.ProductID}}-->>{{p.PName}}<br>{{p.Quantiy}} -->>{{p.Price}}<hr></span></td>
+        <td>{{item['Customer Name']}}</td>
+      	<td>{{item.Address}},{{item.city}},{{item.state}}</td>
+	<td>{{item.Status}}</td>
+	<td>{{item['Total amount']}}</td>
+       <th>{{item.Delivery_Boy}} </th>
+     </tr>     
+    </tbody>
+  </table>
+</div>
+     <div class="panel" ng-show ="tab === 3">
+ <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>Order Id</th>
+	<th>Product</th>
+        <th>Customer</th>
+	<th>Address</th>
+	<th>Amount</th>
+        <th>Status</th>
+        <th>Delivery Boy</th>
+      </tr>
+    </thead>
+    <tbody>
+	 <tr ng-repeat="item in orders_products" ng-show="item.status=='delivered'">
+          <td>{{item._id}}</td>
+	<td><span ng-repeat="p in item.Products">{{p.ProductID}}-->>{{p.PName}}<br>{{p.Quantiy}} -->>{{p.Price}}<hr></span></td>
+	<td>{{item['Customer Name']}}</td>
+	<td>{{item.Address}},{{item.city}},{{item.state}}</td>
+	<td>{{item.Status}}</td>
+	<td>{{item['Total amount']}}</td>
+       <th>{{item.Delivery_Boy}} </th>
+  
+     </tr>     
+    </tbody>
+  </table>
+</div>
+     </div>           </div>
               
             <!-- /. PAGE INNER  -->
         </div>

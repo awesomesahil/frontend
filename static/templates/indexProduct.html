@@ -1,0 +1,362 @@
+      <div ng-controller="HOT_DEALS">
+       <div class="recommended_items" ><!--hot_deals-->
+            <h2 class="title text-center">Hot Deals</h2>            
+           <div id="recommended-item-carousel" ng-show="HotDeals" class="carousel slide" data-ride="carousel"  >
+              <div class="carousel-inner">
+                <div class="item active"> 
+                  <div class="col-sm-3" ng-repeat="p in HotDeals | limitTo:4">
+                    <div class="product-image-wrapper1">
+                      <div class="single-products">
+                        <div class="productinfo text-center">
+                       
+	<a ng-click="pdetail(p)"><img ng-src="http://shopkare.com{{p.images[0]}}" width="200px" height="200px" alt="" /></a>
+                        <p>{{p.product_name}}</p>
+
+                            <select ng-model="k" ng-init="k='0'">
+                                  <option value ="{{$index}}" ng-repeat="qty in p.Quantity[0].Quantities">{{qty[0]}}</option>
+                            </select>
+                                <p> Rs {{p.Quantity[0].Quantities[k][1]}}</p>
+                                <p ng-show="p.Quantity[0].Quantities[k][3]"><br><span  ng-show="p.Quantity[0].Quantities[k][2]"ng-hide="p.Quantity[0].Quantities[k][3]==0" > Price : <span class="orgPrice">
+                                Rs {{p.Quantity[0].Quantities[k][2]}} </span></span>&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-show="p.Quantity[0].Quantities[k][3]" >You Save :  Rs  {{p.Quantity[0].Quantities[k][3]}} </span>
+                                </P>
+
+
+ <a  ng-show="!login"  ng-click="loginError()" data-toggle="modal" data-target="#myModal" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+<span ng-show="login">
+<a ng-show="p.cart[k]=='Add to Cart'" ng-click="addCart(p,k,'HotDeals')"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+
+<span ng-show="p.cart[k]=='Already in Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+
+<span ng-show="p.cart[k]=='Added in Your Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+</span>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="item">    
+                  <div class="col-sm-3" ng-repeat="p in HotDeals |limitTo:4:5">
+                    <div class="product-image-wrapper1">
+                      <div class="single-products">
+                        <div class="productinfo text-center">
+                     
+
+ 	<a ng-click="pdetail(p)"><img ng-src="http://shopkare.com{{p.images[0]}}" width="200px" height="200px" alt="" /></a>
+                        <p>{{p.product_name}}</p>
+
+                            <select ng-model="k" ng-init="k='0'">
+                                  <option value ="{{$index}}" ng-repeat="qty in p.Quantity[0].Quantities">{{qty[0]}}</option>
+                            </select>
+                                <p> Rs {{p.Quantity[0].Quantities[k][1]}}</p>
+                                <p ng-show="p.Quantity[0].Quantities[k][3]"><br><span  ng-show="p.Quantity[0].Quantities[k][2]"ng-hide="p.Quantity[0].Quantities[k][3]==0" > Price : <span class="orgPrice">
+                                Rs {{p.Quantity[0].Quantities[k][2]}} </span></span>&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-show="p.Quantity[0].Quantities[k][3]" >You Save :  Rs  {{p.Quantity[0].Quantities[k][3]}} </span>
+                                </P>
+
+
+ <a  ng-show="!login"  ng-click="loginError()" data-toggle="modal" data-target="#myModal" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+<span ng-show="login">
+
+<a ng-show="p.cart[k]=='Add to Cart'" ng-click="addCart(p,k,'HotDeals')"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+
+<span ng-show="p.cart[k]=='Already in Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+
+<span ng-show="p.cart[k]=='Added in Your Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+</span>
+
+		    </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+               
+               <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+                <i class="fa fa-angle-left"></i>
+                </a>
+                <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+                <i class="fa fa-angle-right"></i>
+                </a>      
+  
+        
+
+              <div ng-show ="!HotDeals">
+                <br>
+                 <h2 class="title text-center">Coming Soon</h2>  
+                <br>
+                <br>
+                <br>
+                <br>
+                 </div>
+   </div><!--/hot_deals-->   
+        <div>
+       <div class="category-tab" ><!--category-tab-->
+            <div class="col-sm-12">
+                <ul class="nav nav-tabs">
+                <li class="active" ng-click="getProducts('NewProduct')"><a href="#newProduct" data-toggle="tab">New Products</a></li>
+                <li ng-repeat="data in level2Categories |limitTo :4 |orderBy:random " ng-click="getProducts(data)"><a href="#data" data-toggle="tab">{{data}}</a></li>
+              </ul>
+            </div>
+            <div class="tab-content">
+               <div class="tab-pane fade active in" id="newProduct" ng-show="!clickAction" >
+                <div class="col-sm-3" ng-repeat ="p in McategoryProducts|limitTo :4">  <!-- ng-repeat="p in products"-->
+                  <div class="product-image-wrapper">
+                    
+		    <div class="single-products">
+                      <div class="productinfo text-center">
+                  	<a ng-click="pdetail(p)">      <img ng-src="http://shopkare.com{{p.images[0]}}" width="200px" height="200px" alt="" /></a>
+                        <p>{{p.product_name}}</p>
+	                      
+        		    <select ng-model="k" ng-init="k='0'">
+                                  <option value ="{{$index}}" ng-repeat="qty in p.Quantity[0].Quantities">{{qty[0]}}</option>
+			    </select>
+				<p> Rs {{p.Quantity[0].Quantities[k][1]}}</p>
+				<p ng-show="p.Quantity[0].Quantities[k][3]"><br><span  ng-show="p.Quantity[0].Quantities[k][2]"ng-hide="p.Quantity[0].Quantities[k][3]==0" > Price : <span class="orgPrice">
+				Rs {{p.Quantity[0].Quantities[k][2]}} </span></span>&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-show="p.Quantity[0].Quantities[k][3]" >You Save :  Rs 	{{p.Quantity[0].Quantities[k][3]}} </span>
+				</P>
+
+ <a  ng-show="!login"  ng-click="loginError()" data-toggle="modal" data-target="#myModal" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+<span ng-show="login">
+
+<a ng-show="p.cart[k]=='Add to Cart'" ng-click="addCart(p,k,'McategoryProducts')"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+
+<span ng-show="p.cart[k]=='Already in Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+
+<span ng-show="p.cart[k]=='Added in Your Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+</span>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
+
+              <div class="tab-pane fade active in" id="data" ng-show="clickAction" >
+                <div class="col-sm-3" ng-repeat ="p in McategoryProducts |limitTo:4">  <!-- ng-repeat="p in products"-->
+                  <div class="product-image-wrapper">
+                    <div class="single-products">
+                      <div class="productinfo text-center">
+                       
+
+		<a ng-click="pdetail(p)">	 <img ng-src="http://shopkare.com{{p.images[0]}}" width="200px" height="200px" alt="" /></a>
+                        <p>{{p.product_name}}</p>
+
+                            <select ng-model="k" ng-init="k='0'">
+                                  <option value ="{{$index}}" ng-repeat="qty in p.Quantity[0].Quantities">{{qty[0]}}</option>
+                            </select>
+                                <p> Rs {{p.Quantity[0].Quantities[k][1]}}</p>
+                                <p ng-show="p.Quantity[0].Quantities[k][3]"><br><span  ng-show="p.Quantity[0].Quantities[k][2]"ng-hide="p.Quantity[0].Quantities[k][3]==0" > Price : <span class="orgPrice">
+                                Rs {{p.Quantity[0].Quantities[k][2]}} </span></span>&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-show="p.Quantity[0].Quantities[k][3]" >You Save :  Rs  {{p.Quantity[0].Quantities[k][3]}} </span>
+                                </P>
+
+ <a  ng-show="!login"  ng-click="loginError()" data-toggle="modal" data-target="#myModal" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+<span ng-show="login">
+<a ng-show="p.cart[k]=='Add to Cart'" ng-click="addCart(p,k,'McategoryProducts')"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+
+<span ng-show="p.cart[k]=='Already in Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+
+<span ng-show="p.cart[k]=='Added in Your Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+
+</span>
+        
+
+
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
+            </div>
+          </div><!--/category-tab-->
+        
+          <div class="features_items"><!--features_items-->
+            <h2 class="title text-center">Featured Items</h2>
+            <div class="col-sm-4" ng-show="Featured_Products" ng-repeat="p in Featured_Products | limitTo:6">
+              <div class="product-image-wrapper">
+                <div class="single-products">
+                    <div class="productinfo text-center">
+                      
+			<a ng-click="pdetail(p)">	 <img ng-src="http://shopkare.com{{p.images[0]}}" width="200px" height="200px" alt="" /></a>
+                        <p>{{p.product_name}}</p>
+
+                            <select ng-model="k" ng-init="k='0'">
+                                  <option value ="{{$index}}" ng-repeat="qty in p.Quantity[0].Quantities">{{qty[0]}}</option>
+                            </select>
+                                <p> Rs {{p.Quantity[0].Quantities[k][1]}}</p>
+                                <p ng-show="p.Quantity[0].Quantities[k][3]"><br><span  ng-show="p.Quantity[0].Quantities[k][2]"ng-hide="p.Quantity[0].Quantities[k][3]==0" > Price : <span class="orgPrice">
+                                Rs {{p.Quantity[0].Quantities[k][2]}} </span></span>&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-show="p.Quantity[0].Quantities[k][3]" >You Save :  Rs  {{p.Quantity[0].Quantities[k][3]}} </span>
+                                </P>
+
+
+ <a  ng-show="!login"  ng-click="loginError()" data-toggle="modal" data-target="#myModal" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+<span ng-show="login">
+<a ng-show="p.cart[k]=='Add to Cart'" ng-click="addCart(p,k,'Featured_Products')"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+
+<span ng-show="p.cart[k]=='Already in Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+
+<span ng-show="p.cart[k]=='Added in Your Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+
+</span>
+
+                    </div>
+                    
+                </div>
+                <div class="choose">
+               
+                </div>
+              </div>
+            </div>
+
+            <div ng-show="!Featured_Products">
+              <br>
+              <br>
+              <h2 class="title text-center">Coming Soon</h2>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+            </div>
+        
+            
+          </div><!--features_items-->
+          
+
+          
+          <div class="recommended_items"><!--recommended_items-->
+       
+
+   <h2 class="title text-center">NEW RELEASES</h2>
+           <div id="recommended-item-carousel" ng-show="New_Products" class="carousel slide" data-ride="carousel"  >
+              <div class="carousel-inner">
+                <div class="item active">
+                  <div class="col-sm-3" ng-repeat="p in New_Products | limitTo:4">
+                    <div class="product-image-wrapper1">
+                      <div class="single-products">
+                        <div class="productinfo text-center">
+
+      	<a ng-click="pdetail(p)">   <img ng-src="http://shopkare.com{{p.images[0]}}" width="200px" height="200px" alt="" /></a>
+                        <p>{{p.product_name}}</p>
+
+                            <select ng-model="k" ng-init="k='0'">
+                                  <option value ="{{$index}}" ng-repeat="qty in p.Quantity[0].Quantities">{{qty[0]}}</option>
+                            </select>
+                                <p> Rs {{p.Quantity[0].Quantities[k][1]}}</p>
+                                <p ng-show="p.Quantity[0].Quantities[k][3]"><br><span  ng-show="p.Quantity[0].Quantities[k][2]"ng-hide="p.Quantity[0].Quantities[k][3]==0" > Price : <span class="orgPrice">
+                                Rs {{p.Quantity[0].Quantities[k][2]}} </span></span>&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-show="p.Quantity[0].Quantities[k][3]" >You Save :  Rs  {{p.Quantity[0].Quantities[k][3]}} </span>
+                                </P>
+ <a  ng-show="!login"  ng-click="loginError()" data-toggle="modal" data-target="#myModal" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+<span ng-show="login">
+
+<a ng-show="p.cart[k]=='Add to Cart'" ng-click="addCart(p,k,'New_Products')"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+
+<span ng-show="p.cart[k]=='Already in Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+
+<span ng-show="p.cart[k]=='Added in Your Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+
+</span>
+
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="item">
+                  <div class="col-sm-3" ng-repeat="p in New_Products |limitTo:4:5">
+                    <div class="product-image-wrapper1">
+                      <div class="single-products">
+                        <div class="productinfo text-center">
+
+
+ 	<a ng-click="pdetail(p)"><img ng-src="http://shopkare.com{{p.images[0]}}" width="200px" height="200px" alt="" /></a>
+                        <p>{{p.product_name}}</p>
+
+                            <select ng-model="k" ng-init="k='0'">
+                                  <option value ="{{$index}}" ng-repeat="qty in p.Quantity[0].Quantities">{{qty[0]}}</option>
+                            </select>
+                                <p> Rs {{p.Quantity[0].Quantities[k][1]}}</p>
+                                <p ng-show="p.Quantity[0].Quantities[k][3]"><br><span  ng-show="p.Quantity[0].Quantities[k][2]"ng-hide="p.Quantity[0].Quantities[k][3]==0" > Price : <span class="orgPrice">
+                                Rs {{p.Quantity[0].Quantities[k][2]}} </span></span>&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-show="p.Quantity[0].Quantities[k][3]" >You Save :  Rs  {{p.Quantity[0].Quantities[k][3]}} </span>
+                                </P>
+ <a  ng-show="!login"  ng-click="loginError()" data-toggle="modal" data-target="#myModal" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+<span ng-show="login">
+
+<a ng-show="p.cart[k]=='Add to Cart'" ng-click="addCart(p,k,'New_Products')"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+
+<span ng-show="p.cart[k]=='Already in Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+
+<span ng-show="p.cart[k]=='Added in Your Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+</span>
+
+                    </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+               <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+                <i class="fa fa-angle-left"></i>
+                </a>
+                <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+                <i class="fa fa-angle-right"></i>
+                </a>
+</div>
+
+
+
+        <div ng-show="!New_Products">
+          <br>
+          <br>
+          <br>
+                        <h2 class="title text-center">Coming Soon..!!</h2>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+
+        </div>
+      </div><!--/recommended_items-->
+        </div>
+</div>

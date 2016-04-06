@@ -1,0 +1,291 @@
+<!Doctype html>
+<html ng-app="ShopKare_Backend-master">
+<head>
+  <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Portal</title>
+    
+   <!-- 
+ Angular js Codes     -->
+  <script type="text/javascript" src="http://shopkare.com/Admin/static/js/angular.min.js"></script>
+        <script type="text/javascript" src="http://shopkare.com/Admin/static/js/app.js"></script>
+         <script type="text/javascript" src="http://shopkare.com/Admin/static/js/Controllers/addDBboy.js"></script>
+
+	  	
+         <script type="text/javascript" src="http://shopkare.com/Admin/static/js/Controllers/order.js"></script>
+
+
+    <link href="http://shopkare.com/Admin/static/assets/css/bootstrap.css" rel="stylesheet" />
+    
+    <link href="http://shopkare.com/Admin/static/assets/css/font-awesome.css" rel="stylesheet" />
+    
+    <link href="http://shopkare.com/Admin/static/assets/css/style.css" rel="stylesheet" />
+     
+</head>
+<body ng-controller="DBboy_Store">
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a  class="navbar-brand" href="http://shopkare.com/Admin/static/products.html">Admin Portal
+
+                </a>
+            </div>
+
+            <div class="notifications-wrapper">
+<ul class="nav">
+               
+               
+                <li class="dropdown navbar-right">
+                   <a class="dropdown-toggle" data-toggle="dropdown" href="#" >
+                        <i class="fa fa-user-plus"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user" >
+                        
+                       
+                        <li><a href="#"><i class="fa fa-sign-out"></i> Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            </div>
+        </nav>
+        <!-- /. NAV TOP  -->
+        <nav  class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <div class="user-img-div">
+                            <img src="http://shopkare.com/Admin/static/assets/img/user.png" class="img-circle" />
+
+                           
+                        </div>
+
+                    </li>
+                     <li>
+                        <a  href="#"> <center><strong><b>Admin</b> </strong></center></a>
+                    </li>
+                      
+                    <li>
+                        <a href="http://shopkare.com/Admin/static/products.html"><i class="fa fa-sitemap "></i>Products</a>
+                        
+                    </li>
+                    
+                    <li>
+                        <a href="http://shopkare.com/Admin/static/orders.html"><i class="fa fa-bolt "></i>Orders</a>
+                        
+                    </li>
+                   
+                    <li>
+                        <a  href="http://shopkare.com/Admin/static/feedback.html"><i class="fa fa-dashcube "></i>Feedback</a>
+                    </li>
+<li>
+                        <a   href="http://shopkare.com/Admin/static/addcategory.html"><i class="fa fa-bolt "></i>Add Category</a>
+                    </li>
+                   
+				   <li>
+                        <a   href="http://shopkare.com/Admin/static/batches.html"><i class="fa fa-dashcube "></i>Batches</a>
+                    </li>
+		   <li>
+                        <a class="active-menu"   href="http://shopkare.com/Admin/static/addDeliveryboy.html"><i class="fa fa-bolt "></i>Add Delivery Boy</a>
+                    </li>
+
+
+
+  <li>
+                        <a  ng-show="AdminSuper"  href="http://shopkare.com/Admin/static/superUser.html"><i class="fa fa-bolt "></i>Approve Changes</a>
+                    </li>
+
+
+
+
+                </ul>
+            </div>
+
+        </nav>
+    <div id="page-wrapper" class="page-wrapper-cls">
+<form>
+<div class="container ">
+<div class="row"> 
+<div class="col-md-12">
+          <h3 class="page-head-line">Register Delivery Boy</h1>		
+</div>
+
+  <div id="loginbox"  class="mainbox col-md-6  col-sm-8 ">                    
+            <div class="panel panel-info" >
+                    <div class="panel-heading">
+                        <div class="panel-title">Add New Delivery Boy</div>
+                        <div style="float:right; font-size: 80%; position: relative; top:-10px">(Add If Any)</div>
+                    </div>     
+
+                    <div style="padding-top:30px" class="panel-body" >
+
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                       					<div class="alert alert-danger register-alert hidden" role="alert"></div>
+
+  
+  <div>
+<center><b>{{registerDBboyResult}}</b></center>  
+<div class="form-group">
+        <label for="text">Name </label> &nbsp;
+          <input class="form-control" type="text" ng-model="DBboy.Name" placeholder="Enter Delivery Boy Name">  
+    </div>
+ <div class="form-group">
+   <label for="text">Delievery Boy Unique_Id</label>
+    <input type="text"  class="form-control" ng-model="DBboy.UID" placeholder="Assign Unique ID">
+</div>
+ <div class="form-group">
+    <label for="text">Email</label>
+    <input type="email"  class="form-control" ng-model="DBboy.Email"  placeholder="Enter Delivery Boy Email-ID" >
+    </div>
+   
+<div class="form-group">  
+<label for="text">Password</label>
+<input type="text" class="form-control" ng-model="DBboy.Password"  placeholder="Assign Password to Delivery Boy">
+</div>
+<div class="form-group">
+  <label for="number">Contact Number</label>
+  <input type="number" class="form-control"  ng-model="DBboy.Mobile" placeholder="Enter Delivery Boy's Contact" >
+  </div>
+<button type="button" class="btn btn-primary" ng-disabled="!DBboy.Name || !DBboy.Email ||!DBboy.Password ||!DBboy.Mobile ||!DBboy.UID" ng-click="registerDeliveryBoy()">Submit</button>
+			</div>  
+			</div>
+		   
+		   </div>
+                </div>
+
+
+
+</div>
+<div class="row">
+<div class="col-md-12">
+          <h3 class="page-head-line">Register New Store</h1>		
+</div>
+  <div id="loginbox"  class="mainbox col-md-6  col-sm-8 ">                    
+            <div class="panel panel-info" >
+                    <div class="panel-heading">
+                        <div class="panel-title">Add New Store</div>
+                        <div style="float:right; font-size: 80%; position: relative; top:-10px">(Add If Any)</div>
+                    </div>     
+
+                    <div style="padding-top:30px" class="panel-body" >
+
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                    	<div class="alert alert-danger register-alert hidden" role="alert"></div>
+
+  
+  <div>
+  {{registerStore}}
+<div class="form-group">
+        <label for="text">Store Name </label> &nbsp;
+          <input class="form-control" type="text" ng-model="Store.Name" placeholder="Enter Delivery Boy Name">  
+    </div>
+ <div class="form-group">
+   <label for="text">Store Unique_Id</label>
+    <input type="text"  class="form-control" ng-model="Store.UID" placeholder="Assign Unique ID">
+</div>
+		 
+<button type="button" class="btn btn-primary" ng-disabled="!Store.Name || !Store.UID" ng-click="registerStore()">Submit</button>
+			</div>  		</div>
+		   
+		   </div>
+</div>                </div>
+<div class="row">
+<div class="col-md-12">
+          <h3 class="page-head-line">Remove Delivery Boy</h1>		
+</div>
+  <div id="loginbox"  class="mainbox col-md-6  col-sm-8 ">                    
+            <div class="panel panel-info" >
+                    <div class="panel-heading">
+                        <div class="panel-title">Remove Delivery Boy</div>
+                        <div style="float:right; font-size: 80%; position: relative; top:-10px">(Add If Any)</div>
+                    </div>     
+
+                    <div style="padding-top:30px" class="panel-body" >
+
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                    	<div class="alert alert-danger register-alert hidden" role="alert"></div>
+
+  
+  <div>
+  <center><b><span style='color:green'>{{RMdbBoyMsg}}</span><span style='color:red'>{{RMdbBoyMSgError}}</span></B></center><br>
+<div class="form-group">
+        <label for="text">Delivery Boy Unique Id</label> &nbsp;
+<select class="btn btn-default dropdown-toggle" type="button" ng-model="RDBboy">  
+    <option value="{{DB}}" ng-repeat="DB in deliveryBoys">{{DB.Name}} --> {{DB.UID}} </option>
+    </select> 
+</div><button type="button" class="btn btn-primary" ng-disabled="!RDBboy "ng-click="removeDBboy(RDBboy)">Submit</button>
+			</div>  		</div>
+		   
+		   </div>
+                </div></div>
+<div class="row">
+<div class="col-md-12">
+          <h3 class="page-head-line">Remove Store</h1>		
+</div>
+  <div id="loginbox"  class="mainbox col-md-6  col-sm-8 ">                    
+            <div class="panel panel-info" >
+                    <div class="panel-heading">
+                        <div class="panel-title">Remove Existing Store</div>
+                        <div style="float:right; font-size: 80%; position: relative; top:-10px">(Add If Any)</div>
+                    </div>     
+
+                    <div style="padding-top:30px" class="panel-body" >
+
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                    	<div class="alert alert-danger register-alert hidden" role="alert"></div>
+
+  
+  <div>
+  {{removeStore}}
+<div class="form-group">
+   <label for="text">Store Unique_Id</label>
+  
+ <select class="btn btn-default dropdown-toggle" type="button" ng-model="RSrore.UID" >  
+    <option value="{{Str.UID}}" ng-repeat="Str in Stores">{{Str.Name}} </option>
+    </select>
+</div>
+
+		 
+<button type="button" class="btn btn-primary" ng-disabled=" !RStore.UID" ng-click="removeStore()">Submit</button>
+			</div>  		</div>
+		   
+		   </div>
+                </div>
+</div>
+</form>
+</div>
+</div></div</div></div></div></div><footer>
+          <b> &copy; Admin Portal | By : Creative Mammoth  </b>
+    </footer>  
+    
+    <!-- /. FOOTER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- JQUERY SCRIPTS -->
+    <script src="http://shopkare.com/Admin/static/assets/js/jquery-1.11.1.js"></script>
+    <!-- BOOTSTRAP SCRIPTS -->
+    <script src="http://shopkare.com/Admin/static/assets/js/bootstrap.js"></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src="http://shopkare.com/Admin/static/assets/js/jquery.metisMenu.js"></script>
+    <!-- CUSTOM SCRIPTS -->
+    <script src="http://shopkare.com/Admin/static/assets/js/custom.js"></script>
+	
+	
+<script>
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+});
+</script>
+
+
+</body>
+</html>

@@ -81,7 +81,11 @@
                                     <!-- Button -->
 
                                     <div class="col-sm-12 controls" >
-                                      <a id="btn-login" name="submit" value="submit" ng-click="loginData()" href="#" class="btn btn-success" ng-disabled="!l_data.Email || !l_data.Password">Login  </a>
+                                      <a id="btn-login" name="submit" value="submit" ng-click="loginData('Super Admin')" href="#" class="btn btn-success" ng-disabled="!l_data.Email || !l_data.Password">Login as Super Admin </a>
+
+    <a id="btn-login" name="submit" value="submit" ng-click="loginData('Normal Admin')" href="#" class="btn btn-success" ng-disabled="!l_data.Email || !l_data.Password">Login as Normal Admin </a>
+
+
                                       <a id="btn-fblogin" href="#" ng-hide=true class="btn btn-primary">Login with Facebook</a>
 
                                     </div>

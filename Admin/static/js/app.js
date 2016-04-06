@@ -1,4 +1,5 @@
 (function() {
+	console.log("aPP Js");
   var app = angular.module('ShopKare_Backend-master', []);
 //   var base = 'http://127.0.0.1:5000';
   var base = 'http://shopkare.com';
@@ -25,8 +26,15 @@
       "Password": ""
     };
 
-    $scope.loginData=function(){
-      $http.post(base + '/api/Admin/login/?user='+ JSON.stringify($scope.l_data))
+    $scope.loginData=function(id){
+console.log(id);
+if(id =='Super Admin'){
+localStorage.setItem("ShopkareAdminType", "Super Admin");
+}
+else{
+localStorage.setItem("ShopkareAdminType", "Normal Admin");
+}     
+ $http.post(base + '/api/Admin/login/?user='+ JSON.stringify($scope.l_data)+'&adminType='+id)
        .success(function(response){
 	  if (response.response == 'Login Successfull')
 	  {
@@ -36,9 +44,14 @@
 	 $scope.reply=response.response;
       })
        .error(function(error){
-	 $scope.reply=error;
+	console.log(error);
+console.log("scsc");	 
+$scope.reply=error.response;
       });
-    }; 
+ 
+
+
+   }; 
    }]);
 
 
@@ -70,6 +83,24 @@
       ;
     }; 
   }]);
+
+app.controller('ShowAllP',['$scope','$http', function($scope,$http){
+console.log("Sjow all");
+
+$http.get(base +'/api/Product/getAllProducts/?level1category=Grocery')
+.success(function(data){
+console.log(data);
+$scope.AllProducts=data;
+console.log(JSON.parse(JSON.stringify(data)));
+
+ })
+.error(function(response){
+
+console.log(response);
+});
+
+}]);
+
 
 
      

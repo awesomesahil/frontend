@@ -1,0 +1,107 @@
+ <div class="container"> 
+        <div id="loginbox1" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+            <div class="panel panel-success" >
+                    <div class="panel-heading">
+                        <div class="panel-title">Courier</div>
+                        <div style="float:right; font-size: 80%; position: relative; top:-10px">(Add If Any)</div>
+                    </div>     
+
+                    <div style="padding-top:30px" class="panel-body" >
+
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                            
+                       
+                                    
+          <form id="signupform" class="form-horizontal" role="form">
+          	<center><b><span style="color:red">{{MessageCourrierError}}</span><span style="color:green">{{MessageCourrierSuccess}}</span><b></center>
+          		<br>
+							<div class="top-margin">
+								<label>Full Name</label>
+								<input type="text" class="form-control"	ng-model="order.name">
+							</div>
+							<br>
+							<div class="top-margin">
+								<label>Email Address <span class="text-danger">*</span></label>
+								<input type="email" name="email" class="form-control"	ng-model="order.email">
+							</div>
+							<br>
+							<div class="top-margin">
+								<label>Mobile Number <span class="text-danger">*</span></label>
+								<input type="number" name="phonenumber" class="form-control" ng-model="order.mobile">
+							</div>
+				
+			<br>
+				
+							<br>
+							<div class="top-margin">
+								<label>Item Name</label>
+								<input type="text" class="form-control" name="ItemName"
+								ng-model="order.item">
+							</div>
+							<br>
+							<div class="form-group">
+							 <div class="col-sm-12">
+    <label for="exampleTextarea">Item Details (if any)</label>
+    <textarea class="form-control" id="exampleTextarea" rows="3" ng-model="order.itemdetails"></textarea>
+	</div>
+  </div>
+
+  <div class="top-margin">
+                                                                <label>Source Address<span class="text-danger">*</span></label>
+                                                                <input type="text" name="phonenumber" class="form-control" ng-model="order.source.address">
+                                                        </div>
+                                
+<div class="row top-margin">
+								<div class="col-sm-6">
+									<label>City<span class="text-danger">*</span></label>
+									<input type="text" class="form-control" ng-model="order.source.city">
+								</div>
+								<div class="col-sm-6">
+									<label>State <span class="text-danger">*</span></label>
+									<input type="text" class="form-control"  ng-model="order.source.state" required >
+								</div>
+							</div>
+							<br>
+ <div class="top-margin">
+
+  <label>Destination Address<span class="text-danger">*</span></label>
+                                                                <input type="text" name="phonenumber" class="form-control" ng-model="order.destination.address">
+                                                        </div>
+                                
+
+<div class="row top-margin">
+								<div class="col-sm-6">
+									<label>City<span class="text-danger">*</span></label>
+									<input type="text" class="form-control"  ng-model="order.destination.city">
+								</div>
+								<div class="col-sm-6">
+									<label>State <span class="text-danger">*</span></label>
+									<input type="text" class="form-control" ng-model="order.destination.state" required >
+								</div>
+							</div>
+							<br>
+									<label class="checkbox">
+										<input type="checkbox" ng-model="checked"> I've read the <a href="">Terms and Conditions</a></label>
+
+								<hr><br><div class="row">									
+    								<center><button class="btn btn-success" type="submit" ng-show="login" ng-disabled="!order.name || !order.email ||!order.source.city||!order.source.state||!order.source.address ||!order.mobile ||!order.item ||!order.itemdetails ||!checked ||!order.destination.city||!order.destination.state||!order.destination.address" ng-click="courierSubmission()">Sign Up</button></center>
+<center><button type="button" class="btn btn-success"  ng-show="!login"   ng-disabled="!order.name || !order.email ||!order.source.city||!order.source.state||!order.source.address ||!order.mobile ||!order.item ||!order.itemdetails ||!checked ||!order.destination.city||!order.destination.state||!order.destination.address" data-toggle="modal" data-target="#myModal">Submit</button> </center>
+								</div>
+								<br>
+						
+						</form>  
+                            
+
+
+
+                        </div>                     
+                    </div>  
+        </div>
+       
+    </div>		
+		
+						</div>
+						</div>
+						</div>
+						</div>
+	

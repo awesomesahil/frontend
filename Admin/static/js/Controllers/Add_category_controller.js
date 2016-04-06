@@ -1,12 +1,22 @@
 (function() {
   var app = angular.module('ShopKare_Backend-master', []);
 
-//   var base = 'http://127.0.0.1:5000';
+//   var base = 'http://127.0.0.1:55240';
   var base = 'http://shopkare.com';
   var categories = [];
   var level1keys= [];
 
   app.controller('addlevel1category',function($scope,$http){
+
+var AdminType=localStorage.getItem("ShopkareAdminType");
+console.log(AdminType);
+if(AdminType=='Super Admin'){
+$scope.AdminSuper=true;
+}
+else{
+$scope.AdminSuper=false;
+}
+
       $scope.level1category="";
       $scope.addlevel1category=function(){
         $http.post(base+"/api/Admin/addlevel1category/?level1category="+$scope.level1category)
@@ -48,7 +58,17 @@
 
 
     app.controller('addmaincategory',function($scope,$http){
-      $scope.level1category="";
+
+var AdminType=localStorage.getItem("ShopkareAdminType");
+console.log(AdminType);
+if(AdminType=='Super Admin'){
+$scope.AdminSuper=true;
+}
+else{
+$scope.AdminSuper=false;
+} 
+
+     $scope.level1category="";
       $scope.Maincategory="";
       
       $http.post(base+'/api/Admin/reteriveCategories/')
@@ -72,7 +92,7 @@
       $http.post(base + "/api/Admin/addMainCategory/?level1category=" + JSON.parse($scope.l1category)._id + "&MainCategory=" + JSON.stringify($scope.Maincategory))
         .success(function(response){
             $scope.message=response;
-          $scope.level1category="";
+          $scope.l1category="";
           $scope.Maincategory="";
          })
           .error(function(error){
@@ -104,7 +124,26 @@
       $scope.subcategories = $scope.subcategories[mainCategory];
 //       console.log(Object.keys(a.Categories[key])[0]);
     };
-    });
+ 
+  $scope.removelevelonecategory=function(data){
+
+        var x=JSON.parse(data);
+        console.log(JSON.parse(data));
+        console.log(x._id);
+        $http.post(base+'/api/Admin/removelevel1Category/?level1category='+x._id)
+        .success(function(data){
+        console.log(data);
+	$scope.rml1category="";
+       $scope.message=data;
+	 })
+        .error(function(response){
+        console.log(response);
+       $scope.message=response;
+	 });
+        };
+
+
+   });
 
 
 
@@ -132,8 +171,9 @@
 	$http.post(base+"/api/Admin/addSubCategory/?level1category=" + JSON.parse($scope.l1category)._id + "&MainCategory=" + $scope.mainCategories[$scope.mainCategory] + "&subCategory=" + JSON.stringify($scope.subCategory))
         .success(function(response){
             $scope.response1=response;
-          $scope.level1category="";
-          $scope.Maincategory="";
+          $scope.l1category="";
+          $scope.mainCategory="";
+		$scope.subCategory="";
         })
           .error(function(error){
         console.log(error);
@@ -164,6 +204,50 @@
       $scope.subcategories = $scope.subcategories[mainCategory];
 //       console.log(Object.keys(a.Categories[key])[0]);
     };
+
+
+
+        $scope.rmMainCategory=function(data){
+        var x=JSON.parse($scope.l1category)
+        console.log(x._id);
+        console.log($scope.mainCategories[data]);
+        $http.post('/api/Admin/removeMainCategory/?level1category='+x._id + '&MainCategory='+$scope.mainCategories[data])
+        .success(function(data){
+        console.log(data);
+       $scope.message=data;
+	$scope.l1category="";
+	$scope.removeMainCategory="";
+
+	 })
+        .error(function(response){
+        console.log(response);
+       $scope.message=response;
+	 });
+
+} ;
+
+
+        $scope.rmsubCategory=function(data){
+        var x=JSON.parse($scope.l1category);
+        console.log(x._id);
+        console.log($scope.mainCategories[$scope.mainCategory]);
+        console.log($scope.subcategories[data]);
+
+     $http.post('/api/Admin/removeSubCategory/?level1category='+x._id + '&MainCategory='+$scope.mainCategories[$scope.mainCategory]+'&subCategory='+$scope.subcategories[data])
+        .success(function(data){
+        console.log(data);
+         $scope.message=data;
+	$scope.l1category="";
+	$scope.mainCategory="";
+	$scope.removesubCategory="";
+
+	})
+        .error(function(response){
+        console.log(response);
+       $scope.message=response;
+	 });
+    };
+
     });
  
 

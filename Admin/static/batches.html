@@ -90,8 +90,25 @@
 				   <li>
                         <a class="active-menu"   href="http://shopkare.com/Admin/static/batches.html"><i class="fa fa-dashcube "></i>Batches</a>
                     </li>
+<li>
+                        <a class="active"   href="http://shopkare.com/Admin/static/addDeliveryboy.html"><i class="fa fa-bolt "></i>Add Delievery Boy</a>
+                    </li>
+
+
+
+
+  <li>
+                        <a  ng-show="AdminSuper"  href="http://shopkare.com/Admin/static/superUser.html"><i class="fa fa-bolt "></i>Approve Changes</a>
+                    </li>
+
+
+
+
+
+
                 </ul>
-            </div>
+
+</div>
 
         </nav>
 
@@ -160,7 +177,7 @@
     <tbody>
       <tr ng-repeat="batch in Batches">
         <td>{{batch.StoreId}}</td>
-        <td>{{batch.DateOfPurchase}}</td>
+        <td>{{batch}}</td>
 	<td>{{batch.DateOfExpiry}}</td>
         <td>{{batch.Quantity.type}}: Rs {{batch.Quantity.value}}</td>
         <td>{{batch.Cost_Price}}</td>
@@ -207,10 +224,10 @@
     </div>
  <div class="form-group">
     <label for="date">Date Of Purchase</label>
-    <input type="date" name="name" class="form-control" ng-model="Batch_data.DateOfPurchase" id="your-name" placeholder="Enter date of purchase" >
+    <input type="text" class="form-control" ng-model="Batch_data.DateOfPurchase" placeholder="Enter date of purchase" >
     </div>
     <label for="date">Date Of Expiry</label>
-    <input type="date" name="name" class="form-control" ng-model="Batch_data.DateOfExpiry" id$
+    <input type="text" name="name" class="form-control" ng-model="Batch_data.DateOfExpiry" id$
     </div>
 <div id="Add_New">
      <label for="qno">Quantity</label><br>
@@ -218,7 +235,7 @@
            <span class="caret"></span>
          <ul class="dropdown-menu">
             <li class="dropdown-submenu">
-            <option value="{{qty.Quantity[0]}}" ng-repeat="qty in quantity" >{{qty.Quantity[0]}}</option> 
+            <option value="{{qty}}" ng-repeat="qty in qtyBatchUse" >{{qty}}</option> 
             </li>
               </ul>
       </select>

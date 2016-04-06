@@ -1,0 +1,121 @@
+<style type="text/css">
+.cart_total_quantity{
+	padding-left: 40px;
+}
+
+</style>
+<section id="cart_items" ng-controller="checkout">
+		<div class="container">
+			<div class="breadcrumbs">
+				<ol class="breadcrumb">
+				  <li><a href="#">Home</a></li>
+				  <li class="active">Check out</li>
+				</ol>
+			</div><!--/breadcrums-->
+			<div ng-show="!checkoutMessage" ng-hide="messageEmptyCart">
+
+			<center><h2> Finaliase Your Order </h2></center>
+			<br>
+			
+ <br><form id="loginform" class="form-horizontal" role="form">
+                                    
+                            <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"></span>
+                                    <input id="number" type="number" class="form-control" placeholder="Contact Number" ng-model="order.Mobile">                                        
+                                    </div>
+                                  
+                            <div style="margin-bottom: 25px" class="input-group">
+                                        <span class="input-group-addon"></i></span>
+                                        <input id="address" type="text" class="form-control"  placeholder="Enter Your Delivery Address" ng-model="order.Address">
+                                    </div>
+                          
+
+
+
+	<section id="cart_items"  ng-controller="cartItems">
+		<div class="container">
+			<div class="table-responsive cart_info" ng-show="message">
+				<table class="table table-condensed">
+					<thead>
+						<tr class="cart_menu">
+							<td class="image">Item</td>
+							<td class="price">Name</td>
+							<td class="total">Price</td>
+							<td class="price">No Of Quantity</td>
+							<td class="price">Total Price</td>
+						</tr>
+					</thead>
+					<tbody>
+<tr ng-repeat ="p in Products">
+							
+							<td class="cart_product">
+							<a href=""><img class="img" ng-src="http://shopkare.com{{p[0][0]}}" alt="{{p[0][0]}}" height="100px" width="150px"></a>
+							</td>	
+							<td class="cart_price">
+								<p>{{p[1]}}</p>
+							</td>
+							<td class="cart_total">
+								<p>{{p[2]}}</p>
+								<p class="cart_total_price">Rs.{{p[3]}}</p>
+							</td>		
+							<td class="cart_price">
+								<p class="cart_total_quantity">{{p[5]}}</p>
+							</td>
+							
+							<td class="cart_total">
+								<p class="cart_total_price">Rs.{{p[3]*p[5]}}</p>
+							</td>
+							
+						</tr>
+						<tr class="cart">
+							<td class="image"></td>
+							<td class="description"></td>
+							<td class="total"></td>
+							<td class="price"><h4>Total Price</h4></td>
+							<td  class="price"><h4>{{TotalPrice}}</h4></td>
+							
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section> <!--/#cart_items-->
+
+
+
+
+						<div style="margin-top:10px" class="form-group">
+                                    <!-- Button -->
+
+                                  <center>  <div class="col-sm-12 controls">
+                                    <a id="btn-login" ng-disabled="!order.Mobile || !order.Address || !acTiveButton" ng-click="checkOutFunction()" class="btn btn-success">Final Your Order [SUBMIT]</a>
+                                      
+                                    </div></center>
+                                </div>
+
+
+
+
+                            </div>
+                        <div ng-show="checkoutMessage">
+                        	<br>
+                        	<h3>
+                        	Your Order is registred successfully
+                        	You Will be Contact Soon
+                        	</h3>
+                        	<br>
+                        </div>
+
+                  <div ng-show="messageEmptyCart">
+				<br><h4> Cart is Empty...
+					<br> Buy Some Products in Your Cart</h4>
+					<br>
+			</div>
+
+
+				</div>
+	</section> <!--/#cart_items-->
+
+	<br>
+

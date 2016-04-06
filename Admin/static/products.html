@@ -1,6 +1,4 @@
-﻿
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" ng-app="ShopKare_Backend-master">
+﻿<html xmlns="http://www.w3.org/1999/xhtml" ng-app="ShopKare_Backend-master">
 <head>
   <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -101,8 +99,22 @@
 					<li>
                         <a    href="http://shopkare.com/Admin/static/batches.html"><i class="fa fa-dashcube "></i>Batches</a>
                     </li>
+                 <li>
+                        <a    href="http://shopkare.com/Admin/static/addDeliveryboy.html"><i class="fa fa-bolt "></i>Add Delivery Boy</a>
+                    </li>
+
                    
-                </ul>
+		<li>
+                        <a  ng-show="AdminSuper"  href="http://shopkare.com/Admin/static/superUser.html"><i class="fa fa-bolt "></i>Approve Changes</a>
+                    </li>
+
+     <li>
+                        <a    href="http://shopkare.com/Admin/static/showAll.html"><i class="fa fa-bolt "></i>All Products</a>
+                    </li>
+
+
+
+</ul>
             </div>
 
         </nav>        <!-- /. SIDEBAR MENU (navbar-side) -->
@@ -110,13 +122,18 @@
            <div class="row">
 <div class="container" >
 	   <h1 class="page-head-line">Products</h1>                                   
-    <div class="dropdown">
+<b> To Add New Products click here..!!</b><a href="add.html"> <button type="button" class="btn btn-primary">Add Product</button></a>
+          <br>
+<br><br>
+<div class="dropdown">
     <label for="text">Select Level 1 Category</label> &nbsp;
 
-    <select class="btn btn-default dropdown-toggle" type="button" ng-model="l1category" ng-change="selectLevel1Category()">  
+    <select class="btn btn-default dropdown-toggle" type="button" ng-model="l1category" ng-change="selectLevel1Category()">
     <option value="{{category}}" ng-repeat="category in categories">{{category._id}} </option>
-    </select> 
+    </select>
   </div>
+
+ 
 <div class="dropdown">
     <label for="text">Select Main Category</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <select class="btn btn-default dropdown-toggle" ng-model="mainCategory" type="button" ng-change="selectmainCategory()">  
@@ -134,26 +151,53 @@
 <table class="table table-hover table-bordered">
     <thead>
       <tr>
-        <th>Product Name</th>
+	<th width="125 px">Image</th>
+	<th width="100 px">Product Category</th>
+        <th width="100 px">Product Name</th>
         <th>Selling Price</th>
 	<th>Description</th>
 	<th>Options</th>
 	</tr>
     </thead>
-    <tbody>
+	 <tbody>
       <tr ng-repeat="p in products">
-        <td>{{p.product_name}}</td>
-        <td>
-        <p ng-repeat ="k in p.Quantity">
-        {{k['Quantity'][0]}} :- <b>RS {{k['Quantity'][1]}}</b>
-        </p>
-	</td>
-	<td>{{p.description}}</td>
-	<td><button type="button" class="btn btn-danger" ng-click="delete_Product($index)">Remove</button>
-      </tr>
+	<td><img ng-src="http://shopkare.com{{ImageDATA[$index].images[0]}}" height="100px" width="100 px">
+<span ng-show="edit==p"><br><b>Change Pic : </b>
+  <input type="file" id="file" name="file" multiple
+            onchange="angular.element(this).scope().getFileDetails(this)" />
+</span>
+</td>
+	
+<td width="100 px">{{p['Product Category']}}<br><input width="100" type="text" ng-show="edit==p" ng-model="edit.Product_Category"></td>
+        <td width="100 px">{{p.product_name}}<input type="text" width="100px" ng-show="edit==p" ng-model="edit.product_name"></td>
+        <td>  
+	<p ng-repeat ="k in p.Quantity[0].Quantities">
+        {{k[0]}} :- <b>RS {{k[1]}}</b>
+	<span ng-show="edit==p"><br>Quanitity<input type="text" ng-show="edit==p" ng-model="p.Quantity[0].Quantities[$index][0]">
+	<span ng-show="edit==p"><br>Price :<input type="number" ng-show="edit==p" ng-model="p.Quantity[0].Quantities[$index][1]"></span>
+	<br>Orignal Price:<input type="number" ng-show="edit==p" ng-model="p.Quantity[0].Quantities[$index][2]">
+	<br>Discount<input type="number" ng-show="edit==p" ng-model="p.Quantity[0].Quantities[$index][3]">
+	<select ng-show="edit==p" ng-model="p.Quantity[0].Quantities[$index][4]">
+	<option value="{{k}}" ng-repeat="k in OptionsProduct">{{k}}</option>
+	
+	</select>
+
+
+
+       <button ng-show="edit==p" class='btn btn-xs btn-danger' ng-click="deleteQuantity(p,$index)">x</button>
+	 </p>
+	<button ng-show="edit ==p" class='btn btn-primary' ng-click='addNewQuantity(p)'>Add New Quantity</button>
+	</td></span>
+<td>{{p.description}}<br><input type="text" ng-show="edit==p" ng-model="edit.description" value="{{p['description']}}"></td>
+	<td><button type="button" ng-hide="edit==p" class="btn btn-danger" ng-click="delete_Product($index)">Remove</button> <button type="button" ng-hide="edit==p" class="btn btn-danger" ng-click="set_edit(p,$index)">Edit </button>
+<span ng-show="edit==p">
+<br><button  ng-click="saveData(p,AdminSuper)"  ng-show="!AdminSuper">Send Request For Changes</button>
+<button  ng-click="uploadFiles(p)" ng-show="AdminSuper">Save</button>
+<br>     
+</span>
+ </tr>
      </tbody>
   </table>
-	  <a href="add.html"><button type="button" class="btn btn-primary">Add Product</button></a> &nbsp&nbsp&nbsp&nbsp
 	  <button type="button" ng-hide="true" class="btn btn-primary">Remove Product</button>
 	  <br>
 	  

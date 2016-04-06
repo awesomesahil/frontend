@@ -1,0 +1,71 @@
+
+<div class="features_items" id="top"><br><!--features_items-->
+<br>
+
+					<h2 ng-show="!ProdtmessageError" class="title text-center">Available Products</h2>
+						<div class="col-sm-4" id="ProductsShow" ng-repeat ="p in products.slice(Pindex,Pindex+18)" ng-show="!ProdtmessageError">
+							<div class="product-image-wrapper">
+								<div class="single-products">
+									<div class="productinfo text-center">
+								
+
+
+                <a ng-click="pdetail(p)"><img ng-src="http://shopkare.com{{p.images[0]}}" width="200px" height="200px" alt="" /></a>
+                        <p>{{p.product_name}}</p>
+
+                            <select ng-model="k" ng-init="k='0'">
+                                  <option value ="{{$index}}" ng-repeat="qty in p.Quantity[0].Quantities">{{qty[0]}}</option>
+                            </select>
+
+<div class="cart_quantity_button">
+<br><a class="cart_quantity_up"><button  ng-click="addQuantity(p,k)">+</button> </a>
+		<input class="cart_quantity_input" type="text" name="quantity" readonly value="1" ng-model="p.cartQty[k]" size="2">                      			<a class="cart_quantity_up"><button ng-disabled="p.cartQty[k]==1" ng-click="subQuantity(p,k)">--</button> </a>
+</div>
+                               <h4><b> Rs {{p.Quantity[0].Quantities[k][1]*p.cartQty[k]}}</b></h4>
+                                <p ng-show="p.Quantity[0].Quantities[k][3]"><br><span  ng-show="p.Quantity[0].Quantities[k][2]"ng-hide="p.Quantity[0].Quantities[k][3]==0" > Price : <span class="orgPrice">
+                                Rs {{p.Quantity[0].Quantities[k][2]}} </span></span>&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-show="p.Quantity[0].Quantities[k][3]" >You Save :  Rs  {{p.Quantity[0].Quantities[k][3]}} </span>
+                                </P>
+
+<br>
+
+ <a  ng-show="!login"  ng-click="loginError()" data-toggle="modal" data-target="#myModal" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+<span ng-show="login">									
+<a ng-show="p.cart[k]=='Add to Cart'" ng-click="addCart(p,k)"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</a>
+
+										<span ng-show="p.cart[k]=='Already in Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+
+										<span ng-show="p.cart[k]=='Added in Your Cart'" ng-disable="p.cart[k]=='Already in Cart'"class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>{{p.cart[k]}}</span>
+</span>
+									</div>
+									
+								</div>
+								<!--<div class="choose">
+									<ul class="nav nav-pills nav-justified">
+										<li><a href=""><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+										<li><a href=""><i class="fa fa-plus-square"></i>Add to compare</a></li>
+									</ul>
+								</div>-->
+							</div>
+						</div></div>
+<div ng-show="ProdtmessageError">
+	<h2 class="title text-center">No Items Found</h2>
+					
+<br>	<center><h4></h4>
+	<br><b>Try Some Other Categories or use Search Keyword</B>
+</center></div>
+						<div class="row" ng-show="!ProdtmessageError" ng-hide="NO_PAGES==1">
+						<br><center><ul class="pagination">
+							<li ng-repeat="p in NO_PAGES"><a ng-click="setIndexp(p)">{{p+1}}</a></li>
+							</ul></center>
+						</div>
+					</p>
+					</div><!--features_items-->
+<style>
+.orgPrice{
+   text-decoration: line-through;
+
+}
+#ProductsShow{
+	height:500px;
+}
+<style>
